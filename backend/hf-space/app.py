@@ -238,9 +238,9 @@ async def workout_weekly(user_id: str = Query(...), week_start: str = Query(defa
 
 
 @app.get("/intervention/today")
-async def intervention_today(user_id: str = Query(...), age: int = Query(...)):
+async def intervention_today(user_id: str = Query(...), age: int = Query(...), north_star: str = Query(default=None)):
     _load_services()
-    return _get_todays_intervention(user_id, age)
+    return _get_todays_intervention(user_id, age, north_star)
 
 
 @app.post("/circadian/score")
