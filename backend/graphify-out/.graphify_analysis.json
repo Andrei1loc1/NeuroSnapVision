@@ -1,0 +1,538 @@
+{
+  "communities": {
+    "0": [
+      "date",
+      "hf_space_services_intervention_engine_py_services_intervention_engine",
+      "hf_space_services_intervention_engine_py_services_intervention_engine_find_worst_dimension",
+      "hf_space_services_intervention_engine_py_services_intervention_engine_get_daily_leverage_point",
+      "hf_space_services_protocol_service_py_services_protocol_service",
+      "hf_space_services_protocol_service_py_services_protocol_service_compute_streak_from_protocols",
+      "hf_space_services_protocol_service_py_services_protocol_service_create_default_protocol",
+      "hf_space_services_protocol_service_py_services_protocol_service_find_protocol",
+      "hf_space_services_protocol_service_py_services_protocol_service_get_compliance_streak",
+      "hf_space_services_protocol_service_py_services_protocol_service_get_daily_protocol",
+      "hf_space_services_protocol_service_py_services_protocol_service_prefill_from_previous",
+      "hf_space_services_protocol_service_py_services_protocol_service_submit_evening_checkin",
+      "hf_space_services_protocol_service_py_services_protocol_service_submit_morning_checkin",
+      "services_intervention_engine_py_services_intervention_engine",
+      "services_intervention_engine_py_services_intervention_engine_find_worst_dimension",
+      "services_intervention_engine_py_services_intervention_engine_get_daily_leverage_point",
+      "services_protocol_service_py_services_protocol_service",
+      "services_protocol_service_py_services_protocol_service_compute_streak_from_protocols",
+      "services_protocol_service_py_services_protocol_service_create_default_protocol",
+      "services_protocol_service_py_services_protocol_service_find_protocol",
+      "services_protocol_service_py_services_protocol_service_get_compliance_streak",
+      "services_protocol_service_py_services_protocol_service_get_daily_protocol",
+      "services_protocol_service_py_services_protocol_service_prefill_from_previous",
+      "services_protocol_service_py_services_protocol_service_submit_evening_checkin",
+      "services_protocol_service_py_services_protocol_service_submit_morning_checkin"
+    ],
+    "1": [
+      "hf_space_services_bio_age_service_py_services_bio_age_service",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_composite_to_bio_age",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_all_dimensions",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_allostatic_load",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_bio_age",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_hazard_ratios",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_intervention_efficacy",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_leverage_point",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_organ_ages",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_compute_pace",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_find_leverage_point",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_get_bio_age_history",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_get_bio_age_snapshot",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_safe_int",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_scale_1to5_to_100",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_scale_range_to_100",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_score_ans",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_score_hormesis",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_score_light",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_score_movement",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_score_nutrition",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_score_sleep",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_score_subjective",
+      "hf_space_services_bio_age_service_py_services_bio_age_service_weighted_composite"
+    ],
+    "2": [
+      "services_bio_age_service_py_services_bio_age_service",
+      "services_bio_age_service_py_services_bio_age_service_composite_to_bio_age",
+      "services_bio_age_service_py_services_bio_age_service_compute_all_dimensions",
+      "services_bio_age_service_py_services_bio_age_service_compute_allostatic_load",
+      "services_bio_age_service_py_services_bio_age_service_compute_bio_age",
+      "services_bio_age_service_py_services_bio_age_service_compute_hazard_ratios",
+      "services_bio_age_service_py_services_bio_age_service_compute_intervention_efficacy",
+      "services_bio_age_service_py_services_bio_age_service_compute_leverage_point",
+      "services_bio_age_service_py_services_bio_age_service_compute_organ_ages",
+      "services_bio_age_service_py_services_bio_age_service_compute_pace",
+      "services_bio_age_service_py_services_bio_age_service_find_leverage_point",
+      "services_bio_age_service_py_services_bio_age_service_get_bio_age_history",
+      "services_bio_age_service_py_services_bio_age_service_get_bio_age_snapshot",
+      "services_bio_age_service_py_services_bio_age_service_safe_int",
+      "services_bio_age_service_py_services_bio_age_service_scale_1to5_to_100",
+      "services_bio_age_service_py_services_bio_age_service_scale_range_to_100",
+      "services_bio_age_service_py_services_bio_age_service_score_ans",
+      "services_bio_age_service_py_services_bio_age_service_score_hormesis",
+      "services_bio_age_service_py_services_bio_age_service_score_light",
+      "services_bio_age_service_py_services_bio_age_service_score_movement",
+      "services_bio_age_service_py_services_bio_age_service_score_nutrition",
+      "services_bio_age_service_py_services_bio_age_service_score_sleep",
+      "services_bio_age_service_py_services_bio_age_service_score_subjective",
+      "services_bio_age_service_py_services_bio_age_service_weighted_composite"
+    ],
+    "3": [
+      "hf_space_app",
+      "hf_space_app_bio_age_current",
+      "hf_space_app_bio_age_history",
+      "hf_space_app_circadian_score",
+      "hf_space_app_debug_error",
+      "hf_space_app_healthy_score",
+      "hf_space_app_intervention_today",
+      "hf_space_app_load_services",
+      "hf_space_app_mind_score",
+      "hf_space_app_predict",
+      "hf_space_app_predict_alias",
+      "hf_space_app_predict_raw",
+      "hf_space_app_protocol_evening",
+      "hf_space_app_protocol_morning",
+      "hf_space_app_protocol_today",
+      "hf_space_app_rationale_134",
+      "hf_space_app_recommendation",
+      "hf_space_app_root",
+      "hf_space_app_startup_event",
+      "hf_space_app_workout_log",
+      "hf_space_app_workout_weekly",
+      "request"
+    ],
+    "4": [
+      "algorithm_upgrade_plan",
+      "bio_age_service_compute",
+      "circadian_nutrition_service",
+      "circadian_service",
+      "coordinator",
+      "hormesis_service",
+      "inflammaging_service",
+      "intervention_engine",
+      "intervention_service",
+      "main_app",
+      "mind_score_service",
+      "multi_agent_service",
+      "nutrition_service",
+      "prediction_service",
+      "protocol_service",
+      "reports_analysis_service",
+      "requirements",
+      "vo2max_service",
+      "workout_service"
+    ],
+    "5": [
+      "main",
+      "main_bio_age_current",
+      "main_bio_age_history",
+      "main_circadian_score",
+      "main_healthy_score",
+      "main_intervention_today",
+      "main_mind_score",
+      "main_predict",
+      "main_protocol_evening",
+      "main_protocol_morning",
+      "main_protocol_today",
+      "main_recommendation",
+      "main_root",
+      "main_workout_log",
+      "main_workout_weekly",
+      "uploadfile"
+    ],
+    "6": [
+      "gradio_space_app",
+      "gradio_space_app_format_food_name",
+      "gradio_space_app_get_nutrition",
+      "gradio_space_app_predict_food",
+      "hf_space_services_prediction_service_py_services_prediction_service",
+      "hf_space_services_prediction_service_py_services_prediction_service_classify_region",
+      "hf_space_services_prediction_service_py_services_prediction_service_predict_food",
+      "image",
+      "services_prediction_service_py_services_prediction_service",
+      "services_prediction_service_py_services_prediction_service_classify_region",
+      "services_prediction_service_py_services_prediction_service_predict_food",
+      "yolo_space_app",
+      "yolo_space_app_detect_food"
+    ],
+    "7": [
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_compliance_score",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_fiber_score",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_food_diversity",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_nutrient_timing",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_pe_ratio",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_sleep_nutrition_correlation",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_upf_percentage",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_compute_week_over_week_trends",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_generate_smart_recommendations",
+      "hf_space_services_reports_analysis_service_py_services_reports_analysis_service_parse_hour"
+    ],
+    "8": [
+      "services_reports_analysis_service_py_services_reports_analysis_service",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_compliance_score",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_fiber_score",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_food_diversity",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_nutrient_timing",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_pe_ratio",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_sleep_nutrition_correlation",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_upf_percentage",
+      "services_reports_analysis_service_py_services_reports_analysis_service_compute_week_over_week_trends",
+      "services_reports_analysis_service_py_services_reports_analysis_service_generate_smart_recommendations",
+      "services_reports_analysis_service_py_services_reports_analysis_service_parse_hour"
+    ],
+    "9": [
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_extract_meal_calories",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_extract_meal_times",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_filter_meals_for_day",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_get_melatonin_onset",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_caloric_distribution",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_day",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_eating_window",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_fasting_consistency",
+      "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_macro_timing"
+    ],
+    "10": [
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_extract_meal_calories",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_extract_meal_times",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_filter_meals_for_day",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_get_melatonin_onset",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_caloric_distribution",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_day",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_eating_window",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_fasting_consistency",
+      "services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_macro_timing"
+    ],
+    "11": [
+      "hf_space_services_circadian_service_py_services_circadian_service",
+      "hf_space_services_circadian_service_py_services_circadian_service_calc_consistency",
+      "hf_space_services_circadian_service_py_services_circadian_service_calc_distribution",
+      "hf_space_services_circadian_service_py_services_circadian_service_calc_eating_window",
+      "hf_space_services_circadian_service_py_services_circadian_service_calc_timing",
+      "hf_space_services_circadian_service_py_services_circadian_service_meal_period",
+      "hf_space_services_circadian_service_py_services_circadian_service_safe_int",
+      "hf_space_services_circadian_service_py_services_circadian_service_score_circadian_extended",
+      "hf_space_services_circadian_service_py_services_circadian_service_score_circadian_nutrition"
+    ],
+    "12": [
+      "services_circadian_service_py_services_circadian_service",
+      "services_circadian_service_py_services_circadian_service_calc_consistency",
+      "services_circadian_service_py_services_circadian_service_calc_distribution",
+      "services_circadian_service_py_services_circadian_service_calc_eating_window",
+      "services_circadian_service_py_services_circadian_service_calc_timing",
+      "services_circadian_service_py_services_circadian_service_meal_period",
+      "services_circadian_service_py_services_circadian_service_safe_int",
+      "services_circadian_service_py_services_circadian_service_score_circadian_extended",
+      "services_circadian_service_py_services_circadian_service_score_circadian_nutrition"
+    ],
+    "13": [
+      "hf_space_services_workout_service_py_services_workout_service",
+      "hf_space_services_workout_service_py_services_workout_service_calc_cardio_score",
+      "hf_space_services_workout_service_py_services_workout_service_calc_mobility_score",
+      "hf_space_services_workout_service_py_services_workout_service_calc_neat_score",
+      "hf_space_services_workout_service_py_services_workout_service_calc_resistance_score",
+      "hf_space_services_workout_service_py_services_workout_service_filter_workouts_by_range",
+      "hf_space_services_workout_service_py_services_workout_service_get_weekly_movement_score",
+      "hf_space_services_workout_service_py_services_workout_service_log_workout"
+    ],
+    "14": [
+      "services_workout_service_py_services_workout_service",
+      "services_workout_service_py_services_workout_service_calc_cardio_score",
+      "services_workout_service_py_services_workout_service_calc_mobility_score",
+      "services_workout_service_py_services_workout_service_calc_neat_score",
+      "services_workout_service_py_services_workout_service_calc_resistance_score",
+      "services_workout_service_py_services_workout_service_filter_workouts_by_range",
+      "services_workout_service_py_services_workout_service_get_weekly_movement_score",
+      "services_workout_service_py_services_workout_service_log_workout"
+    ],
+    "15": [
+      "agents_multi_agent_service_py_agents_multi_agent_service",
+      "agents_multi_agent_service_py_agents_multi_agent_service_get_calorie_state",
+      "agents_multi_agent_service_py_agents_multi_agent_service_get_consistency_state",
+      "agents_multi_agent_service_py_agents_multi_agent_service_get_fat_state",
+      "agents_multi_agent_service_py_agents_multi_agent_service_get_multi_agent_recommendation",
+      "agents_multi_agent_service_py_agents_multi_agent_service_get_protein_state",
+      "agents_multi_agent_service_py_agents_multi_agent_service_get_timing_state"
+    ],
+    "16": [
+      "hf_space_agents_multi_agent_service_py_agents_multi_agent_service",
+      "hf_space_agents_multi_agent_service_py_agents_multi_agent_service_get_calorie_state",
+      "hf_space_agents_multi_agent_service_py_agents_multi_agent_service_get_consistency_state",
+      "hf_space_agents_multi_agent_service_py_agents_multi_agent_service_get_fat_state",
+      "hf_space_agents_multi_agent_service_py_agents_multi_agent_service_get_multi_agent_recommendation",
+      "hf_space_agents_multi_agent_service_py_agents_multi_agent_service_get_protein_state",
+      "hf_space_agents_multi_agent_service_py_agents_multi_agent_service_get_timing_state"
+    ],
+    "17": [
+      "hf_space_services_nutrition_service_py_services_nutrition_service",
+      "hf_space_services_nutrition_service_py_services_nutrition_service_calculate_healthy_score",
+      "hf_space_services_nutrition_service_py_services_nutrition_service_calculate_protein_timing_score",
+      "hf_space_services_nutrition_service_py_services_nutrition_service_calculate_score",
+      "hf_space_services_nutrition_service_py_services_nutrition_service_format_food_name",
+      "hf_space_services_nutrition_service_py_services_nutrition_service_get_nutrition"
+    ],
+    "18": [
+      "services_nutrition_service_py_services_nutrition_service",
+      "services_nutrition_service_py_services_nutrition_service_calculate_healthy_score",
+      "services_nutrition_service_py_services_nutrition_service_calculate_protein_timing_score",
+      "services_nutrition_service_py_services_nutrition_service_calculate_score",
+      "services_nutrition_service_py_services_nutrition_service_format_food_name",
+      "services_nutrition_service_py_services_nutrition_service_get_nutrition"
+    ],
+    "19": [
+      "hf_space_services_hormesis_service_py_services_hormesis_service",
+      "hf_space_services_hormesis_service_py_services_hormesis_service_compute_hormesis",
+      "hf_space_services_hormesis_service_py_services_hormesis_service_get_hormesis_hazard_ratio",
+      "hf_space_services_hormesis_service_py_services_hormesis_service_safe_float",
+      "hf_space_services_hormesis_service_py_services_hormesis_service_safe_int"
+    ],
+    "20": [
+      "hf_space_services_mind_score_service_py_services_mind_score_service",
+      "hf_space_services_mind_score_service_py_services_mind_score_service_calculate_mind_score",
+      "hf_space_services_mind_score_service_py_services_mind_score_service_calculate_mind_score_from_counts",
+      "hf_space_services_mind_score_service_py_services_mind_score_service_generate_mind_recommendation",
+      "hf_space_services_mind_score_service_py_services_mind_score_service_meals_to_mind_counts"
+    ],
+    "21": [
+      "services_hormesis_service_py_services_hormesis_service",
+      "services_hormesis_service_py_services_hormesis_service_compute_hormesis",
+      "services_hormesis_service_py_services_hormesis_service_get_hormesis_hazard_ratio",
+      "services_hormesis_service_py_services_hormesis_service_safe_float",
+      "services_hormesis_service_py_services_hormesis_service_safe_int"
+    ],
+    "22": [
+      "services_mind_score_service_py_services_mind_score_service",
+      "services_mind_score_service_py_services_mind_score_service_calculate_mind_score",
+      "services_mind_score_service_py_services_mind_score_service_calculate_mind_score_from_counts",
+      "services_mind_score_service_py_services_mind_score_service_generate_mind_recommendation",
+      "services_mind_score_service_py_services_mind_score_service_meals_to_mind_counts"
+    ],
+    "23": [
+      "hf_space_services_inflammaging_service_py_services_inflammaging_service",
+      "hf_space_services_inflammaging_service_py_services_inflammaging_service_compute_inflammaging",
+      "hf_space_services_inflammaging_service_py_services_inflammaging_service_get_inflammaging_hazard_ratio",
+      "hf_space_services_inflammaging_service_py_services_inflammaging_service_safe_int"
+    ],
+    "24": [
+      "services_inflammaging_service_py_services_inflammaging_service",
+      "services_inflammaging_service_py_services_inflammaging_service_compute_inflammaging",
+      "services_inflammaging_service_py_services_inflammaging_service_get_inflammaging_hazard_ratio",
+      "services_inflammaging_service_py_services_inflammaging_service_safe_int"
+    ],
+    "25": [
+      "agents_coordinator_py_agents_coordinator",
+      "agents_coordinator_py_agents_coordinator_coordinate_recommendation",
+      "agents_coordinator_py_agents_coordinator_get_best_action"
+    ],
+    "26": [
+      "hf_space_agents_coordinator_py_agents_coordinator",
+      "hf_space_agents_coordinator_py_agents_coordinator_coordinate_recommendation",
+      "hf_space_agents_coordinator_py_agents_coordinator_get_best_action"
+    ],
+    "27": [
+      "hf_space_services_vo2max_service_py_services_vo2max_service",
+      "hf_space_services_vo2max_service_py_services_vo2max_service_estimate_vo2max",
+      "hf_space_services_vo2max_service_py_services_vo2max_service_get_vo2max_hazard_ratio"
+    ],
+    "28": [
+      "services_vo2max_service_py_services_vo2max_service",
+      "services_vo2max_service_py_services_vo2max_service_estimate_vo2max",
+      "services_vo2max_service_py_services_vo2max_service_get_vo2max_hazard_ratio"
+    ],
+    "29": [
+      "generate_nutrition",
+      "generate_nutrition_rationale_1"
+    ],
+    "30": [
+      "hf_space_services_intervention_service_py_services_intervention_service",
+      "hf_space_services_intervention_service_py_services_intervention_service_get_todays_intervention"
+    ],
+    "31": [
+      "services_intervention_service_py_services_intervention_service",
+      "services_intervention_service_py_services_intervention_service_get_todays_intervention"
+    ],
+    "32": [
+      "run_backend"
+    ]
+  },
+  "cohesion": {
+    "0": 0.19333333333333333,
+    "1": 0.18840579710144928,
+    "2": 0.18840579710144928,
+    "3": 0.1645021645021645,
+    "4": 0.2046783625730994,
+    "5": 0.125,
+    "6": 0.20512820512820512,
+    "7": 0.21818181818181817,
+    "8": 0.21818181818181817,
+    "9": 0.37777777777777777,
+    "10": 0.37777777777777777,
+    "11": 0.3888888888888889,
+    "12": 0.3888888888888889,
+    "13": 0.42857142857142855,
+    "14": 0.42857142857142855,
+    "15": 0.5238095238095238,
+    "16": 0.5238095238095238,
+    "17": 0.4,
+    "18": 0.4,
+    "19": 0.6,
+    "20": 0.7,
+    "21": 0.6,
+    "22": 0.7,
+    "23": 0.6666666666666666,
+    "24": 0.6666666666666666,
+    "25": 0.6666666666666666,
+    "26": 0.6666666666666666,
+    "27": 0.6666666666666666,
+    "28": 0.6666666666666666,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0
+  },
+  "gods": [
+    {
+      "id": "hf_space_app_load_services",
+      "label": "_load_services()",
+      "degree": 15
+    },
+    {
+      "id": "bio_age_service_compute",
+      "label": "Bio Age Computation",
+      "degree": 12
+    },
+    {
+      "id": "hf_space_services_bio_age_service_py_services_bio_age_service_compute_bio_age",
+      "label": "compute_bio_age()",
+      "degree": 10
+    },
+    {
+      "id": "hf_space_services_bio_age_service_py_services_bio_age_service_compute_all_dimensions",
+      "label": "_compute_all_dimensions()",
+      "degree": 10
+    },
+    {
+      "id": "hf_space_services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_day",
+      "label": "score_day()",
+      "degree": 10
+    },
+    {
+      "id": "services_bio_age_service_py_services_bio_age_service_compute_bio_age",
+      "label": "compute_bio_age()",
+      "degree": 10
+    },
+    {
+      "id": "services_bio_age_service_py_services_bio_age_service_compute_all_dimensions",
+      "label": "_compute_all_dimensions()",
+      "degree": 10
+    },
+    {
+      "id": "services_circadian_nutrition_service_py_services_circadian_nutrition_service_score_day",
+      "label": "score_day()",
+      "degree": 10
+    },
+    {
+      "id": "main_app",
+      "label": "FastAPI App (main.py)",
+      "degree": 9
+    },
+    {
+      "id": "hf_space_services_workout_service_py_services_workout_service_get_weekly_movement_score",
+      "label": "get_weekly_movement_score()",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Algorithm Upgrade Plan",
+      "target": "Inflammaging Score",
+      "source_files": [
+        "context/algorithm-upgrade-plan.md",
+        "backend/services/inflammaging_service.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "cites",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories; peripheral node `Inflammaging Score` unexpectedly reaches hub `Algorithm Upgrade Plan`"
+    },
+    {
+      "source": "Algorithm Upgrade Plan",
+      "target": "Hormesis Tracker",
+      "source_files": [
+        "context/algorithm-upgrade-plan.md",
+        "backend/services/hormesis_service.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "cites",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories; peripheral node `Hormesis Tracker` unexpectedly reaches hub `Algorithm Upgrade Plan`"
+    },
+    {
+      "source": "Algorithm Upgrade Plan",
+      "target": "Bio Age Computation",
+      "source_files": [
+        "context/algorithm-upgrade-plan.md",
+        "backend/services/bio_age_service.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "cites",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories"
+    },
+    {
+      "source": "Algorithm Upgrade Plan",
+      "target": "VO2max Estimation",
+      "source_files": [
+        "context/algorithm-upgrade-plan.md",
+        "backend/services/vo2max_service.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "cites",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories"
+    },
+    {
+      "source": "Algorithm Upgrade Plan",
+      "target": "Nutrition Scoring",
+      "source_files": [
+        "context/algorithm-upgrade-plan.md",
+        "backend/services/nutrition_service.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "cites",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `score_day()` connect `Docker & Config` to `Bio-Age Computation`?",
+      "why": "High betweenness centrality (0.009) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `score_day()` connect `Community 10` to `Bio-Age Computation`?",
+      "why": "High betweenness centrality (0.009) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `get_weekly_movement_score()` connect `Community 13` to `Bio-Age Computation`?",
+      "why": "High betweenness centrality (0.006) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `Bio Age Computation` (e.g. with `Bio Age Computation` and `Protocol Check-in Service`) actually correct?",
+      "why": "`Bio Age Computation` has 2 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Generate nutrition_data.json for all 270 food classes.`, `Test endpoint that reads raw body without UploadFile.`, `Circadian Nutrition Advanced` to the rest of the system?",
+      "why": "4 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Hormesis & VO2Max` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.125 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

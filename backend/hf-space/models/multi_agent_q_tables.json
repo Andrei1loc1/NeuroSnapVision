@@ -1,0 +1,80 @@
+{
+  "protein_q": {
+    "very_low_protein": {
+      "increase_protein": 99.99937943517541,
+      "suggest_lean_protein": 84.97330787954657,
+      "maintain": 84.96930532619541
+    },
+    "low_protein": {
+      "increase_protein": 84.74241349641316,
+      "suggest_lean_protein": 99.9927922506921,
+      "maintain": 84.6687315385361
+    },
+    "adequate_protein": {
+      "increase_protein": 84.99999573415205,
+      "suggest_lean_protein": 84.99998223723217,
+      "maintain": 99.99999997873866
+    }
+  },
+  "calorie_q": {
+    "too_low_calories": {
+      "increase_calories": 99.99883112008753,
+      "maintain": 84.98466756718467,
+      "reduce_calories": 84.95330429756872
+    },
+    "normal_calories": {
+      "increase_calories": 84.99978603754741,
+      "maintain": 99.99999822946056,
+      "reduce_calories": 84.99976146548799
+    },
+    "too_high_calories": {
+      "increase_calories": 84.99200407345086,
+      "maintain": 84.98016295569852,
+      "reduce_calories": 99.99993467630468
+    }
+  },
+  "timing_q": {
+    "late_meals": {
+      "eat_earlier": 99.99999999992876,
+      "maintain_timing": 84.9999999988514
+    },
+    "normal_timing": {
+      "eat_earlier": 84.99997961521856,
+      "maintain_timing": 99.99999623759092
+    }
+  },
+  "fat_q": {
+    "low_fats": {
+      "increase_healthy_fats": 99.96577491696608,
+      "maintain_fats": 84.6486788815194,
+      "reduce_fats": 84.00772459467689
+    },
+    "normal_fats": {
+      "increase_healthy_fats": 84.99979818457243,
+      "maintain_fats": 99.99999652825699,
+      "reduce_fats": 84.99945175709483
+    },
+    "high_fats": {
+      "increase_healthy_fats": 84.99980037860132,
+      "maintain_fats": 84.999589841442,
+      "reduce_fats": 99.99999910607966
+    }
+  },
+  "consistency_q": {
+    "inconsistent": {
+      "improve_consistency": 99.99999124795252,
+      "stabilize_meal_routine": 84.9993160913826,
+      "maintain_consistency": 84.99702861665024
+    },
+    "moderately_consistent": {
+      "improve_consistency": 84.99779417810458,
+      "stabilize_meal_routine": 99.99999051520152,
+      "maintain_consistency": 84.99906118558108
+    },
+    "consistent": {
+      "improve_consistency": 84.95369765451207,
+      "stabilize_meal_routine": 84.97581909309834,
+      "maintain_consistency": 99.99852714355505
+    }
+  }
+}

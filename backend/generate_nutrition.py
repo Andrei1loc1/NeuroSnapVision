@@ -1,0 +1,210 @@
+"""Generate nutrition_data.json for all 270 food classes."""
+import json
+
+with open("models/class_names_270.json", "r") as f:
+    classes = json.load(f)
+
+PROFILES = {
+    # Fruits — low cal, low protein, high carbs
+    "apple": (95, 0.5, 25, 0.3), "banana": (105, 1.3, 27, 0.4),
+    "orange": (62, 1.2, 15, 0.2), "strawberry": (32, 0.7, 8, 0.3),
+    "grape": (104, 1.1, 27, 0.2), "watermelon": (46, 0.9, 11, 0.2),
+    "pineapple": (82, 0.9, 22, 0.2), "mango": (99, 1.4, 25, 0.6),
+    "peach": (59, 1.4, 14, 0.4), "pear": (101, 0.7, 27, 0.2),
+    "lemon": (17, 0.6, 5, 0.2), "kiwi": (42, 0.8, 10, 0.4),
+    "cherry": (50, 1, 12, 0.3), "blueberry": (57, 0.7, 14, 0.3),
+    "raspberry": (52, 1.2, 12, 0.7), "apricot": (48, 1.4, 11, 0.4),
+    "blackberry": (43, 1.4, 10, 0.5), "fig": (74, 1.5, 19, 0.3),
+    "date": (282, 2.5, 75, 0.4), "pomegranate": (83, 1.7, 19, 1.2),
+    "plum": (30, 0.5, 8, 0.3), "melon": (60, 1, 15, 0.3),
+    "coconut": (283, 2.7, 12, 26.8), "dragon_fruit": (60, 1.2, 13, 0.4),
+    "passion_fruit": (17, 0.4, 4, 0.1), "grapefruit": (52, 0.9, 13, 0.2),
+    "mandarine": (47, 0.7, 12, 0.3), "tangerine": (47, 0.7, 12, 0.3),
+    "pumpkin": (26, 1, 6.5, 0.1), "quince": (57, 0.4, 15, 0.1),
+    "chestnut": (245, 3.2, 53, 2.2), "radish": (4, 0.2, 1, 0.1),
+
+    # Vegetables — very low cal
+    "tomato": (22, 1.1, 4.8, 0.2), "cucumber": (15, 0.7, 3.6, 0.1),
+    "carrot": (41, 0.9, 9.6, 0.2), "broccoli": (34, 2.8, 6.6, 0.4),
+    "spinach": (7, 0.9, 1.1, 0.1), "lettuce": (5, 0.5, 1, 0.1),
+    "onion": (40, 1.1, 9.3, 0.1), "garlic": (4, 0.2, 1, 0),
+    "ginger": (4, 0.1, 1, 0), "pepper": (31, 1, 6, 0.3),
+    "bell_pepper": (31, 1, 6, 0.3), "cabbage": (22, 1.1, 5.2, 0.2),
+    "cauliflower": (25, 1.9, 5, 0.3), "beet": (43, 1.6, 9.6, 0.2),
+    "mushroom": (15, 2.2, 2.3, 0.3), "asparagus": (20, 2.2, 3.9, 0.1),
+    "eggplant": (20, 0.8, 4.8, 0.2), "zucchini": (17, 1.2, 3.1, 0.3),
+    "corn": (96, 3.4, 21, 1.5), "peas": (81, 5.4, 14, 0.4),
+    "okra_stew": (80, 3, 15, 1.5), "jalapeno": (4, 0.1, 1, 0),
+    "chilli_pepper": (40, 1.9, 9, 0.4), "radish": (4, 0.2, 1, 0.1),
+    "seaweed_salad": (70, 2, 12, 1), "green_runner_beans": (35, 1.8, 7, 0.2),
+    "brussels_sprouts": (38, 3, 8, 0.3), "pickle": (15, 0.5, 3, 0.2),
+    "cabbage_roll": (180, 8, 20, 7), "stuffed_peppers": (220, 10, 25, 8),
+    "stuffed_zucchini": (150, 7, 18, 6), "stuffed_vine": (200, 9, 22, 8),
+    "stuffed_grape_leaves": (180, 8, 20, 7), "stuffed_mussels": (220, 12, 18, 9),
+    "stuffed_mumbar": (280, 15, 22, 12), "stuffed_artichokes": (160, 7, 20, 6),
+    "spinach_with_rice": (180, 5, 25, 6), "potato_dish": (160, 4, 28, 4),
+    "potato_salad": (140, 3, 22, 5), "pea_meal": (120, 6, 20, 3),
+    "kidney_bean_dish": (180, 9, 25, 5), "chickpea_dish": (200, 10, 28, 6),
+    "lentil_dish": (180, 9, 25, 5), "lentil_soup": (120, 6, 18, 2),
+    "lentil_balls": (180, 8, 24, 5), "bulgur_pilaf": (150, 4, 28, 3),
+    "yoghurt_soup": (90, 4, 12, 3), "tarhana_soup": (100, 3, 18, 2),
+    "sehriye_soup": (90, 3, 16, 2), "hot_and_sour_soup": (80, 4, 10, 3),
+    "french_onion_soup": (160, 5, 20, 7), "lobster_bisque": (180, 8, 8, 12),
+    "miso_soup": (40, 3, 5, 1), "clam_chowder": (160, 6, 18, 8),
+    "menemen": (180, 9, 10, 12), "bean": (120, 7, 22, 0.5),
+    "bean_sprouts": (30, 3.5, 6, 0.2), "green_olive": (115, 0.8, 6, 10),
+    "black_olive": (115, 0.8, 6, 10), "snow peas": (42, 2.8, 7.5, 0.2),
+    "French beans": (35, 1.8, 7, 0.2), "bamboo shoots": (27, 2.6, 5.2, 0.3),
+    "bean sprouts": (30, 5.3, 5.4, 0.2), "enoki mushroom": (37, 2.7, 7.2, 0.3),
+    "king oyster mushroom": (43, 3.3, 7.8, 0.3), "oyster mushroom": (33, 3.3, 6.2, 0.3),
+    "shiitake": (34, 2.2, 7, 0.3), "white button mushroom": (22, 3.1, 3.3, 0.3),
+    "white radish": (18, 0.6, 4.1, 0.1), "cilantro mint": (4, 0.2, 1, 0.1),
+    "rape": (20, 1.5, 3, 0.3), "kelp": (12, 0.5, 3, 0.1),
+    "seaweed": (12, 0.5, 3, 0.1), "spring onion": (32, 1.8, 7.3, 0.2),
+    "cabbage": (22, 1.1, 5.2, 0.2), "celery stick": (14, 0.6, 3, 0.1),
+    "soup": (80, 4, 12, 2), "salad": (100, 3, 10, 5),
+
+    # Meat & Fish — high protein
+    "steak": (271, 25, 0, 19), "filet_mignon": (271, 25, 0, 19),
+    "dallas_stake": (290, 26, 0, 20), "pork_chop": (231, 25, 0, 15),
+    "pork_ribs": (300, 24, 0, 22), "lamb_chops": (265, 24, 0, 19),
+    "meatball": (250, 20, 8, 15), "fried_chicken": (320, 26, 12, 18),
+    "grilled_salmon": (230, 25, 0, 14), "salmon_fillet": (230, 25, 0, 14),
+    "sashimi": (130, 24, 0, 2), "fish": (206, 22, 0, 12),
+    "fish_and_chips": (350, 18, 35, 17), "fried_calamari": (200, 15, 15, 10),
+    "fried_mussels": (180, 14, 12, 9), "shrimp": (99, 24, 0.2, 0.3),
+    "tempura_shrimp": (250, 15, 20, 14), "crab": (97, 21, 0, 1),
+    "crab_cakes": (200, 12, 20, 10), "scallops": (137, 24, 5, 3),
+    "oysters": (68, 7, 5, 3), "clam": (148, 25, 5, 2),
+    "shellfish": (100, 20, 2, 2), "lobster_roll_sandwich": (320, 18, 30, 15),
+    "sauteed_meat": (250, 22, 5, 15), "sauteed_chicken": (220, 25, 3, 12),
+    "roast_chicken": (165, 31, 0, 3.6), "boiled_chicken": (165, 31, 0, 3.6),
+    "chicken_breast": (165, 31, 0, 3.6), "chicken_wings": (290, 27, 0, 19),
+    "chicken_burger": (350, 25, 30, 15), "chicken_curry": (220, 18, 12, 12),
+    "chicken_quesadilla": (300, 18, 30, 12), "chicken_schnitzel": (300, 22, 18, 15),
+    "chicken_shish_kebab": (220, 28, 5, 10), "beef_carpaccio": (180, 22, 2, 10),
+    "beef_tartare": (180, 22, 2, 10), "tuna_tartare": (130, 22, 1, 4),
+    "foie_gras": (462, 11, 4, 44), "escargots": (90, 13, 2, 2),
+    "perch": (100, 21, 0, 1.5), "fried_cornbreaded_anchovies": (180, 15, 12, 9),
+    "chicken duck": (200, 22, 0, 12), "fried meat": (280, 22, 8, 18),
+    "pork": (242, 27, 0, 14), "lamb": (258, 26, 0, 17),
+    "beef_noodle_soup": (250, 15, 28, 8), "sausage": (301, 12, 2, 26),
+    "salami": (336, 22, 1.6, 28), "bacon": (541, 37, 1.4, 42),
+    "hot_dog": (290, 10, 18, 17), "hamburger": (354, 20, 29, 17),
+    "doner": (280, 20, 15, 15), "pot_kebab": (250, 20, 10, 15),
+    "adana_kebab": (300, 22, 5, 20), "iskender_kebab": (350, 22, 25, 18),
+    "kokorec": (280, 18, 5, 22), "kibbeh": (250, 18, 20, 12),
+    "manti": (280, 12, 35, 8), "tantuni": (220, 20, 10, 12),
+    "lahmacun": (230, 12, 25, 9), "minced_meat_pita": (280, 14, 28, 12),
+    "cig_kofte": (180, 8, 22, 7), "kisir": (180, 5, 28, 6),
+    "peking_duck": (337, 19, 0, 28), "prime_rib": (350, 27, 0, 25),
+    "pulled_pork_sandwich": (300, 20, 30, 12),
+
+    # Eggs & Dairy
+    "egg": (78, 6, 0.6, 5), "boil_egg": (78, 6, 0.6, 5),
+    "eggs_benedict": (280, 15, 18, 18), "deviled_eggs": (130, 7, 2, 10),
+    "sunny_side_up_eggs": (90, 6, 0.5, 7), "omelette": (94, 6, 0.6, 7),
+    "huevos_rancheros": (220, 12, 15, 12), "eggs_with_sausage": (300, 18, 8, 20),
+    "egg_tart": (200, 5, 25, 10), "cheese_plate": (360, 22, 2, 28),
+    "yogurt": (59, 10, 3.6, 0.3), "greek_yogurt_Pasta": (120, 8, 15, 4),
+    "milk": (122, 8, 12, 4.8), "milkshake": (300, 8, 48, 8),
+    "cheese butter": (110, 6, 1, 10), "kazandibi": (200, 5, 30, 7),
+    "sutlac": (180, 5, 28, 6), "sahlep": (150, 3, 25, 4),
+
+    # Grains & Carbs
+    "rice": (206, 4.3, 45, 1.8), "fried_rice": (230, 7, 35, 8),
+    "bread": (265, 9, 49, 3.2), "bagel": (257, 10, 50, 1.5),
+    "croissant": (272, 5.5, 31, 14), "toast": (150, 5, 28, 2),
+    "french_toast": (230, 8, 28, 10), "pancakes": (227, 6, 28, 10),
+    "waffles": (291, 6, 33, 15), "muffin": (300, 5, 40, 12),
+    "corn": (96, 3.4, 21, 1.5), "porridge": (71, 2.5, 12, 1.5),
+    "noodles": (138, 5, 25, 2.2), "ramen": (188, 5, 27, 7),
+    "pho": (120, 6, 18, 3), "pad_thai": (300, 12, 40, 10),
+    "pasta": (131, 5, 25, 1.1), "spaghetti_bolognese": (260, 14, 35, 8),
+    "spaghetti_carbonara": (320, 12, 38, 12), "macaroni_and_cheese": (280, 11, 35, 11),
+    "lasagna": (280, 14, 30, 12), "ravioli": (250, 10, 35, 8),
+    "gnocchi": (180, 5, 35, 3), "risotto": (180, 5, 30, 5),
+    "paella": (250, 12, 35, 7), "bibimbap": (300, 12, 45, 8),
+    "gyoza": (200, 8, 25, 7), "dumplings": (200, 8, 25, 7),
+    "wonton dumplings": (200, 8, 25, 7), "spring_rolls": (120, 4, 18, 4),
+    "falafel": (330, 13, 32, 18), "hummus": (166, 8, 14, 10),
+    "nachos": (346, 9, 36, 19), "tacos": (226, 9, 21, 13),
+    "club_sandwich": (320, 18, 30, 14), "grilled_cheese_sandwich": (290, 11, 28, 16),
+    "sandwich": (250, 12, 30, 8), "breakfast_burrito": (300, 15, 30, 13),
+    "croque_madame": (350, 18, 28, 20), "bruschetta": (180, 5, 25, 8),
+    "garlic_bread": (200, 5, 25, 8), "pizza": (285, 12, 36, 10),
+    "french_fries": (365, 4, 63, 17), "poutine": (350, 8, 50, 18),
+    "onion_rings": (250, 5, 35, 12), "fried_rice": (230, 7, 35, 8),
+    "hunkar_begendi": (220, 10, 25, 10), "karniyarik": (250, 14, 20, 14),
+    "su_boregi": (280, 8, 30, 14), "borek_with_cheese": (260, 8, 28, 13),
+    "borek_with_minced_meat": (280, 12, 28, 14), "hanamaki baozi": (220, 7, 35, 6),
+    "suffle": (150, 7, 15, 8), "pea_meal": (120, 6, 20, 3),
+
+    # Desserts & Sweets
+    "ice_cream": (207, 3.5, 24, 11), "frozen_yogurt": (130, 3, 22, 4),
+    "chocolate_cake": (371, 5, 50, 16), "chocolate_mousse": (260, 4, 30, 15),
+    "brownie": (400, 5, 50, 20), "cheesecake": (321, 6, 25, 22),
+    "carrot_cake": (330, 5, 40, 15), "red_velvet_cake": (350, 5, 45, 16),
+    "strawberry_shortcake": (250, 4, 35, 10), "apple_pie": (237, 2.4, 34, 11),
+    "pie": (250, 3, 35, 11), "cannoli": (290, 5, 30, 16),
+    "creme_brulee": (300, 4, 30, 18), "panna_cotta": (180, 3, 20, 10),
+    "tiramisu": (290, 5, 30, 16), "macarons": (350, 6, 45, 15),
+    "cup_cakes": (300, 4, 45, 14), "donuts": (252, 4, 29, 14),
+    "churros": (250, 3, 35, 12), "beignets": (250, 4, 35, 12),
+    "waffles": (291, 6, 33, 15), "baklava": (410, 6, 45, 22),
+    "kalburabasti": (380, 5, 45, 20), "lokma_dessert": (350, 4, 45, 18),
+    "tulumba_dessert": (350, 4, 45, 18), "kemalpasa_dessert": (320, 5, 42, 16),
+    "bread_pudding": (220, 6, 35, 8), "napoleon_cake": (300, 5, 38, 16),
+    "durian_pancake": (200, 3, 30, 9), "smoothie_bowl": (180, 5, 35, 3),
+    "pudding": (150, 4, 25, 4), "cake": (300, 4, 45, 12),
+    "candy": (150, 0, 38, 0.5), "chocolate": (150, 2, 18, 10),
+    "popcorn": (387, 11, 77, 4.5), "biscuit": (180, 3, 28, 6),
+    "danish_pastry": (270, 5, 35, 13), "turkish_coffee": (2, 0, 0, 0),
+    "tea": (1, 0, 0.3, 0), "ayran": (60, 3, 6, 1.5),
+    "wine": (125, 0.1, 4, 0), "coffee": (2, 0.3, 0, 0),
+    "juice": (110, 1, 26, 0.5),
+
+    # Soups & Stews
+    "beet_salad": (130, 3, 15, 7), "caesar_salad": (190, 8, 8, 15),
+    "caprese_salad": (200, 9, 8, 16), "greek_salad": (150, 5, 10, 11),
+    "shepherd_salad": (90, 3, 8, 6), "okro_stew": (80, 3, 15, 1.5),
+    "white_bean_stew": (200, 10, 28, 6), "cacik": (50, 2, 5, 2),
+    "brussels_sprouts": (38, 3, 8, 0.3),
+
+    # Other / Unknown
+    "other_ingredients": (50, 1, 10, 1), "sauce": (50, 1, 10, 2),
+    "soy": (180, 18, 8, 9), "tofu": (76, 8, 1.9, 4.8),
+    "guacamole": (150, 2, 9, 13), "stuffed_vine": (200, 9, 22, 8),
+    "chupra": (300, 10, 35, 12), "donuts": (252, 4, 29, 14),
+    "zucchini_hash_browns": (150, 3, 20, 7), "potato": (77, 2, 17, 0.1),
+    "pot_kebab": (250, 20, 10, 15), "tobiko": (100, 15, 2, 4),
+    "manila_clams": (140, 24, 5, 2), "suffle": (150, 7, 15, 8),
+    "zucchini": (17, 1.2, 3.1, 0.3), "pomegranate": (83, 1.7, 19, 1.2),
+    "kisir": (180, 5, 28, 6), "dates": (282, 2.5, 75, 0.4),
+}
+
+nutrition_data = {}
+for cls in classes:
+    key = cls.strip().lower()
+    if key in PROFILES:
+        nutrition_data[cls.strip()] = {
+            "calories": PROFILES[key][0],
+            "protein": PROFILES[key][1],
+            "carbs": PROFILES[key][2],
+            "fats": PROFILES[key][3],
+        }
+    else:
+        nutrition_data[cls.strip()] = {
+            "calories": 200,
+            "protein": 10,
+            "carbs": 25,
+            "fats": 8,
+        }
+
+with open("models/nutrition_data.json", "w") as f:
+    json.dump(nutrition_data, f, indent=2)
+
+print(f"Generated nutrition data for {len(nutrition_data)} classes")
+covered = sum(1 for cls in classes if cls.strip().lower() in PROFILES)
+print(f"Covered with specific data: {covered}")
+print(f"Default values: {len(classes) - covered}")
