@@ -116,8 +116,8 @@ async def workout_weekly(user_id: str = Query(...), week_start: str = Query(defa
 
 
 @app.get("/intervention/today")
-async def intervention_today(user_id: str = Query(...), age: int = Query(...)):
-    result = get_todays_intervention(user_id, age)
+async def intervention_today(user_id: str = Query(...), age: int = Query(...), north_star: str = Query(default=None)):
+    result = get_todays_intervention(user_id, age, north_star=north_star)
     return result
 
 

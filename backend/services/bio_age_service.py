@@ -147,10 +147,11 @@ def compute_bio_age(
 def compute_leverage_point(
     chronological_age: int,
     metrics: Optional[dict] = None,
+    north_star: Optional[str] = None,
 ) -> dict:
     metrics = metrics or {}
     dimension_scores = _compute_all_dimensions(metrics)
-    leverage = _find_leverage_point(dimension_scores, chronological_age, metrics)
+    leverage = _find_leverage_point(dimension_scores, chronological_age, metrics, north_star=north_star)
 
     return {
         "dimension": leverage["dimension"],
@@ -493,6 +494,7 @@ def _find_leverage_point(
     dimension_scores: dict[str, float],
     chronological_age: int,
     metrics: Optional[dict] = None,
+    north_star: Optional[str] = None,
 ) -> dict:
     metrics = metrics or {}
     current_composite = _weighted_composite(dimension_scores)
@@ -518,11 +520,35 @@ def _find_leverage_point(
         best_dim = min(dimension_scores, key=dimension_scores.get)
         best_gain = 0.01
 
+    base_action = LEVERAGE_ACTIONS.get(best_dim, "Construiește obiceiuri zilnice consistente.")
+    if north_star:
+        action = _personalize_action(best_dim, base_action, north_star)
+    else:
+        action = base_action
+
     return {
         "dimension": best_dim,
-        "action": LEVERAGE_ACTIONS.get(best_dim, "Construiește obiceiuri zilnice consistente."),
+        "action": action,
         "projected_impact": round(best_gain, 2),
     }
+
+
+_NORTH_STAR_TEMPLATES = {
+    "nutrition": "Adaugă proteine și verdeață la fiecare masă — astfel ai energia de care ai ne pentru „{north_star}”.",
+    "sleep": "Optimizează somnul: culcă-te la aceeași oră și redu lumina albastră — somnul de calitate îți dă claritate pentru „{north_star}”.",
+    "ans": "Practică 5 min de respirație zilnic — sistemul tău nervos echilibrat îți susține „{north_star}”.",
+    "movement": "Adaugă antrenamente de rezistență și cardio Zone 2 — corpul puternic îți permite „{north_star}”.",
+    "light": "Aliniază-ți ritmul circadian cu lumină matinală și mese la ore fixe — ritmul stabilizează energia pentru „{north_star}”.",
+    "subjective": "Practică recunoștința și conexiunea socială — starea de bine îți alimentează „{north_star}”.",
+    "hormesis": "Adaugă stres controlat: duș rece, sauna sau post — reziliența fizică îți susține „{north_star}”.",
+}
+
+
+def _personalize_action(dimension: str, base_action: str, north_star: str) -> str:
+    template = _NORTH_STAR_TEMPLATES.get(dimension)
+    if template:
+        return template.format(north_star=north_star)
+    return "{base_action} \u2014 totul pentru \u201e{north_star}\u201d.".format(base_action=base_action, north_star=north_star)
 
 
 def _compute_allostatic_load(stress_history: list[int], current_stress: int) -> float:
