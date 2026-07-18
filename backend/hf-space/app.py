@@ -1,4 +1,4 @@
-import os
+import os  # v2.1
 import logging
 from datetime import date
 from fastapi import FastAPI, UploadFile, File, Query, Request
@@ -240,7 +240,7 @@ async def workout_weekly(user_id: str = Query(...), week_start: str = Query(defa
 @app.get("/intervention/today")
 async def intervention_today(user_id: str = Query(...), age: int = Query(...), north_star: str = Query(default=None)):
     _load_services()
-    return _get_todays_intervention(user_id, age, north_star)
+    return _get_todays_intervention(user_id, age, north_star=north_star)
 
 
 @app.post("/circadian/score")
