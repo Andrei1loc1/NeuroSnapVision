@@ -5,8 +5,15 @@ import math
 from services.vo2max_service import estimate_vo2max, get_vo2max_hazard_ratio
 from services.inflammaging_service import compute_inflammaging, get_inflammaging_hazard_ratio
 from services.hormesis_service import compute_hormesis, get_hormesis_hazard_ratio
-from services.nutrition_service import calculate_protein_timing_score
-from services.circadian_service import score_circadian_extended
+from services.nutrition_service import (
+    calculate_protein_timing_score,
+    calculate_healthy_score,
+)
+from services.circadian_service import score_circadian_extended, score_circadian_nutrition
+from services.mind_score_service import (
+    meals_to_mind_counts,
+    calculate_mind_score_from_counts,
+)
 
 WEIGHTS = {
     "movement":   0.25,
@@ -148,10 +155,17 @@ def compute_leverage_point(
     chronological_age: int,
     metrics: Optional[dict] = None,
     north_star: Optional[str] = None,
+    trend_bonuses: Optional[dict] = None,
 ) -> dict:
     metrics = metrics or {}
     dimension_scores = _compute_all_dimensions(metrics)
-    leverage = _find_leverage_point(dimension_scores, chronological_age, metrics, north_star=north_star)
+    leverage = _find_leverage_point(
+        dimension_scores,
+        chronological_age,
+        metrics,
+        north_star=north_star,
+        trend_bonuses=trend_bonuses,
+    )
 
     return {
         "dimension": leverage["dimension"],
@@ -495,8 +509,10 @@ def _find_leverage_point(
     chronological_age: int,
     metrics: Optional[dict] = None,
     north_star: Optional[str] = None,
+    trend_bonuses: Optional[dict] = None,
 ) -> dict:
     metrics = metrics or {}
+    trend_bonuses = trend_bonuses or {}
     current_composite = _weighted_composite(dimension_scores)
     hrs = _compute_hazard_ratios(dimension_scores, metrics, chronological_age)
     current_bio_age = _composite_to_bio_age(current_composite, chronological_age, hrs)
@@ -511,6 +527,12 @@ def _find_leverage_point(
 
         room_to_improve = 1.0 - (current / 100)
         effective_gain = DOSE_GAINS.get(dim, 0.5) * room_to_improve
+
+        # Trend bonus: dimensions in recent decline get priority uplift.
+        # The caller computes trend_bonuses from history (e.g. last-3-days
+        # mean vs days-4-7 mean: a drop >10% adds a proportional bonus).
+        bonus = float(trend_bonuses.get(dim, 0.0) or 0.0)
+        effective_gain += bonus
 
         if effective_gain > best_gain:
             best_gain = effective_gain
@@ -641,6 +663,284 @@ def get_bio_age_snapshot(chronological_age: int, metrics: Optional[dict] = None)
             "currentScore": leverage["currentScore"],
             "targetScore": leverage["targetScore"],
         },
+    }
+
+
+def compute_bio_age_from_raw_data(
+    chronological_age: int,
+    raw_data: dict,
+    history: Optional[list[dict]] = None,
+) -> dict:
+    """Assemble the `metrics` dict expected by compute_bio_age from raw user data.
+
+    Frontend sends meals, protocols, workouts, hrv_readings, targets and
+    subjective scores collected from Prisma + localStorage. This function
+    derives the per-dimension sub-scores (healthy_score, mind_score,
+    circadian_score) and packs everything into the `metrics` shape that
+    _score_nutrition / _score_sleep / _score_ans / _score_movement /
+    _score_light / _score_subjective / _score_hormesis already consume.
+    """
+    meals = raw_data.get("meals", []) or []
+    workouts = raw_data.get("workouts", []) or []
+    protocols = raw_data.get("protocols", []) or []
+    hrv_readings = raw_data.get("hrv_readings", []) or []
+
+    targets = raw_data.get("targets", {}) or {}
+    target_calories = float(targets.get("calories", 0) or 0)
+    target_protein = float(targets.get("protein", 0) or 0)
+    target_fats = float(targets.get("fats", 0) or 0)
+
+    sex = raw_data.get("sex", "male")
+    late_meal_hour = int(raw_data.get("late_meal_threshold", 21) or 21)
+
+    # ── Nutrition sub-scores from meals + targets ────────────────
+    today_str = raw_data.get("today")
+    total_calories = 0.0
+    total_protein = 0.0
+    total_fats = 0.0
+    late_meals_count = 0
+    daily_calories: dict[str, float] = {}
+
+    meals_for_backend: list[dict] = []
+    for meal in meals:
+        items = meal.get("items", []) or []
+        meal_calories = sum(float(it.get("calories", 0) or 0) for it in items)
+        meal_protein = sum(float(it.get("proteinGrams", 0) or 0) for it in items)
+        meal_fats = sum(float(it.get("fatGrams", 0) or 0) for it in items)
+
+        total_calories += meal_calories
+        total_protein += meal_protein
+        total_fats += meal_fats
+
+        logged_at = meal.get("loggedAt") or meal.get("time") or ""
+        day_key = (logged_at[:10] if logged_at else "")
+        if day_key:
+            daily_calories[day_key] = daily_calories.get(day_key, 0.0) + meal_calories
+
+        try:
+            hour = int((logged_at[11:13] if logged_at and len(logged_at) >= 13 else "12"))
+        except ValueError:
+            hour = 12
+        if hour >= late_meal_hour:
+            late_meals_count += 1
+
+        time_str = f"{hour:02d}:00"
+        meals_for_backend.append({
+            "food_class": meal.get("food_class") or meal.get("foodClass") or "",
+            "protein": meal_protein,
+            "time": time_str,
+        })
+
+    days_on_target = 0
+    if target_calories > 0 and daily_calories:
+        for day_key, cal in daily_calories.items():
+            ratio = cal / target_calories
+            if 0.75 <= ratio <= 1.15:
+                days_on_target += 1
+
+    healthy_data = calculate_healthy_score({
+        "calories": total_calories,
+        "protein": total_protein,
+        "fats": total_fats,
+        "target_calories": target_calories,
+        "target_protein": target_protein,
+        "target_fats": target_fats,
+        "late_meals_count": late_meals_count,
+        "days_on_target": days_on_target,
+    })
+
+    mind_counts = meals_to_mind_counts(meals_for_backend)
+    mind_data = calculate_mind_score_from_counts(mind_counts)
+
+    first_meal_time = raw_data.get("first_meal_time")
+    last_meal_time = raw_data.get("last_meal_time")
+    circadian_data = score_circadian_nutrition(
+        user_id="",
+        target_date=today_str or "",
+        meals=meals_for_backend,
+        first_meal_time=first_meal_time,
+        last_meal_time=last_meal_time,
+    )
+
+    # ── Protocol (latest check-in) ───────────────────────────────
+    protocol: dict = {}
+    if protocols:
+        latest = protocols[-1]
+        protocol = {
+            "morningRecovery": latest.get("morningRecovery"),
+            "morningEnergy": latest.get("morningEnergy"),
+            "morningMood": latest.get("morningMood"),
+            "morningFocus": latest.get("morningFocus"),
+            "eveningStress": latest.get("eveningStress"),
+            "eveningDigestion": latest.get("eveningDigestion"),
+            "eveningMood": latest.get("eveningMood"),
+            "eveningEnergy": latest.get("eveningEnergy"),
+            "eveningLibido": latest.get("eveningLibido"),
+            "socialConnection": latest.get("socialConnection"),
+            "oralHealth": latest.get("oralHealth"),
+            "coldExposure": latest.get("coldExposure"),
+            "heatExposure": latest.get("heatExposure"),
+            "caffeineCutoff": latest.get("caffeineCutoff"),
+            "screenCutoff": latest.get("screenCutoff"),
+            "morningLight": latest.get("morningLight"),
+            "lastMealTime": latest.get("lastMealTime") or last_meal_time,
+        }
+
+    # ── Stress history from HRV readings ────────────────────────
+    stress_history = [
+        int(r.get("stressLevel", 3) or 3) for r in hrv_readings
+    ]
+
+    metrics = {
+        "healthy_score": healthy_data["healthy_score"],
+        "mind_score": mind_data["mind_score"],
+        "circadian_score": circadian_data["circadian_score"],
+        "protocol": protocol,
+        "meals": meals_for_backend,
+        "workouts": workouts,
+        "stressHistory": stress_history,
+        "sex": sex,
+        "interventionHistory": raw_data.get("interventionHistory"),
+    }
+
+    return compute_bio_age(chronological_age, metrics, history)
+
+
+def get_bio_age_snapshot_from_raw_data(
+    chronological_age: int,
+    raw_data: dict,
+    history: Optional[list[dict]] = None,
+) -> dict:
+    snapshot = compute_bio_age_from_raw_data(chronological_age, raw_data, history)
+    metrics = _build_metrics_from_raw(raw_data)
+    leverage = compute_leverage_point(chronological_age, metrics)
+
+    return {
+        "bio_age_snapshot": snapshot,
+        "leverage_point": {
+            "dimension": leverage["dimension"],
+            "action": leverage["action"],
+            "projectedImpact": leverage["projectedImpact"],
+            "currentScore": leverage["currentScore"],
+            "targetScore": leverage["targetScore"],
+        },
+    }
+
+
+def _build_metrics_from_raw(raw_data: dict) -> dict:
+    """Lightweight metrics reconstruction for compute_leverage_point.
+
+    Reuses the same derivation logic as compute_bio_age_from_raw_data but
+    avoids re-running the full bio-age pipeline. Sufficient for the
+    per-dimension scoring that compute_leverage_point performs internally.
+    """
+    meals = raw_data.get("meals", []) or []
+    workouts = raw_data.get("workouts", []) or []
+    protocols = raw_data.get("protocols", []) or []
+    hrv_readings = raw_data.get("hrv_readings", []) or []
+    targets = raw_data.get("targets", {}) or {}
+
+    total_calories = sum(
+        sum(float(it.get("calories", 0) or 0) for it in (m.get("items", []) or []))
+        for m in meals
+    )
+    total_protein = sum(
+        sum(float(it.get("proteinGrams", 0) or 0) for it in (m.get("items", []) or []))
+        for m in meals
+    )
+    total_fats = sum(
+        sum(float(it.get("fatGrams", 0) or 0) for it in (m.get("items", []) or []))
+        for m in meals
+    )
+
+    late_meal_hour = int(raw_data.get("late_meal_threshold", 21) or 21)
+    late_meals_count = 0
+    daily_calories: dict[str, float] = {}
+    meals_for_backend: list[dict] = []
+    for meal in meals:
+        items = meal.get("items", []) or []
+        meal_calories = sum(float(it.get("calories", 0) or 0) for it in items)
+        logged_at = meal.get("loggedAt") or meal.get("time") or ""
+        day_key = logged_at[:10] if logged_at else ""
+        if day_key:
+            daily_calories[day_key] = daily_calories.get(day_key, 0.0) + meal_calories
+        try:
+            hour = int((logged_at[11:13] if logged_at and len(logged_at) >= 13 else "12"))
+        except ValueError:
+            hour = 12
+        if hour >= late_meal_hour:
+            late_meals_count += 1
+        meals_for_backend.append({
+            "food_class": meal.get("food_class") or meal.get("foodClass") or "",
+            "protein": sum(float(it.get("proteinGrams", 0) or 0) for it in items),
+            "time": f"{hour:02d}:00",
+        })
+
+    target_calories = float(targets.get("calories", 0) or 0)
+    days_on_target = 0
+    if target_calories > 0:
+        for cal in daily_calories.values():
+            ratio = cal / target_calories
+            if 0.75 <= ratio <= 1.15:
+                days_on_target += 1
+
+    healthy_data = calculate_healthy_score({
+        "calories": total_calories,
+        "protein": total_protein,
+        "fats": total_fats,
+        "target_calories": target_calories,
+        "target_protein": float(targets.get("protein", 0) or 0),
+        "target_fats": float(targets.get("fats", 0) or 0),
+        "late_meals_count": late_meals_count,
+        "days_on_target": days_on_target,
+    })
+
+    mind_counts = meals_to_mind_counts(meals_for_backend)
+    mind_data = calculate_mind_score_from_counts(mind_counts)
+
+    circadian_data = score_circadian_nutrition(
+        user_id="",
+        target_date=raw_data.get("today") or "",
+        meals=meals_for_backend,
+        first_meal_time=raw_data.get("first_meal_time"),
+        last_meal_time=raw_data.get("last_meal_time"),
+    )
+
+    protocol: dict = {}
+    if protocols:
+        latest = protocols[-1]
+        protocol = {
+            "morningRecovery": latest.get("morningRecovery"),
+            "morningEnergy": latest.get("morningEnergy"),
+            "morningMood": latest.get("morningMood"),
+            "morningFocus": latest.get("morningFocus"),
+            "eveningStress": latest.get("eveningStress"),
+            "eveningDigestion": latest.get("eveningDigestion"),
+            "eveningMood": latest.get("eveningMood"),
+            "eveningEnergy": latest.get("eveningEnergy"),
+            "eveningLibido": latest.get("eveningLibido"),
+            "socialConnection": latest.get("socialConnection"),
+            "oralHealth": latest.get("oralHealth"),
+            "coldExposure": latest.get("coldExposure"),
+            "heatExposure": latest.get("heatExposure"),
+            "caffeineCutoff": latest.get("caffeineCutoff"),
+            "screenCutoff": latest.get("screenCutoff"),
+            "morningLight": latest.get("morningLight"),
+            "lastMealTime": latest.get("lastMealTime") or raw_data.get("last_meal_time"),
+        }
+
+    stress_history = [int(r.get("stressLevel", 3) or 3) for r in hrv_readings]
+
+    return {
+        "healthy_score": healthy_data["healthy_score"],
+        "mind_score": mind_data["mind_score"],
+        "circadian_score": circadian_data["circadian_score"],
+        "protocol": protocol,
+        "meals": meals_for_backend,
+        "workouts": workouts,
+        "stressHistory": stress_history,
+        "sex": raw_data.get("sex", "male"),
+        "interventionHistory": raw_data.get("interventionHistory"),
     }
 
 

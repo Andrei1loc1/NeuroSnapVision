@@ -7,3 +7,13 @@ backend/__pycache__/
 backend/*.pyc
 .vercel/
 *.tsbuildinfo
+.idea/
+graphify-input/
+graphify-out/
+backend/hf-space/models/*.keras
+backend/hf-space/models/*.pt
+backend/hf-space/models/*.h5
+backend/hf-space/models/*.pkl
+backend/hf-space/models/*.onnx
+*.pyc
+__pycache__/

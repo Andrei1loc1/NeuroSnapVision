@@ -1,3 +1,3 @@
 .\venv\Scripts\activate
-
-python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+Set-Location -LiteralPath "hf-space"
+python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000
