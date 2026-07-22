@@ -33,6 +33,26 @@ logger = logging.getLogger(__name__)
 
 DEBUG = os.environ.get("DEBUG", "").lower() == "true"
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Sentry error monitoring (no-op when SENTRY_DSN is unset).
+# Install with: pip install "sentry-sdk[fastapi]>=1.40,<2.0"
+# Then set SENTRY_DSN in HF Space secrets / .env to activate.
+# ─────────────────────────────────────────────────────────────────────────────
+SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
+if SENTRY_DSN:
+    import sentry_sdk  # type: ignore[import-not-found]
+    from sentry_sdk.integrations.fastapi import FastApiIntegration  # type: ignore[import-not-found]
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[FastApiIntegration()],
+        traces_sample_rate=0.1,
+        environment=os.environ.get("ENVIRONMENT", "production"),
+    )
+    logger.info("Sentry initialized (env=%s)", os.environ.get("ENVIRONMENT", "production"))
+else:
+    logger.info("Sentry disabled (SENTRY_DSN not set)")
+
 app = FastAPI()
 
 

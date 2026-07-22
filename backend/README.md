@@ -43,27 +43,28 @@ backend/
 - **Recomandări multi-agent** — 5 agenți Q-learning (proteină, calorii, timing, grăsimi, consistență)
 - **Bio Age / Protocol / Circadian** — module longevitate
 
+## Prerequisites
+
+- **Python ≥ 3.11**
+- **pip**
+- **venv** (sau `virtualenv`)
+- Spațiu liber ~600 MB pentru modelele ML din `hf-space/models/`
+
 ## Cum rulezi (dev)
 
-**Cerințe:** Python ≥ 3.9
-
 ```bash
-cd backend
+cd backend/hf-space
 python -m venv venv
-# Windows: venv\Scripts\activate
+# Windows:   venv\Scripts\activate
 # Linux/macOS: source venv/bin/activate
 pip install -r requirements.txt
-.\run_backend.ps1
-```
-
-Echivalent manual (fără script):
-
-```bash
-cd hf-space
-python -m uvicorn app:app --reload --host 127.0.0.1 --port 8000
+cp .env.example .env   # apoi completează valorile reale
+uvicorn app:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Serverul pornește la `http://127.0.0.1:8000`. Portul implicit pentru HF Space este 7860.
+
+> Alternativ, din root `backend/` rulează `.\run_backend.ps1` — wrapper-ul face `cd hf-space` + `uvicorn --reload`.
 
 ## Variabile de mediu
 
@@ -75,6 +76,7 @@ Copiază `.env.example` în `.env` și completează valorile reale.
 | `ALLOWED_ORIGINS` | nu | CSV cu originile frontend permise pentru CORS. Ex: `https://neurosnap-vision.vercel.app,http://localhost:3000`. Default: `http://localhost:3000`. |
 | `DEBUG` | nu | Setează `"true"` pentru a include traceback în răspunsurile de eroare 500 (doar dev). Default: gol/false. |
 | `PORT` | nu | Port de ascultare. Default 8000 local, 7860 pe HF Space. |
+| `SENTRY_DSN` | nu | (Opțional) DSN Sentry pentru monitorizare erori backend. Dacă nu este setat, integrarea Sentry rămâne inactivă. |
 
 ## Rute API (păstrate)
 
@@ -83,6 +85,8 @@ Copiază `.env.example` în `.env` și completează valorile reale.
 | `/` | GET | Health check root |
 | `/health` | GET | Status modele + uptime |
 | `/predict`, `/scan` | POST | Clasificare imagine + estimare nutriție (`/scan` și `/predict` sunt alias-uri) |
+| `/predict-raw` | POST | Endpoint de test — citește body-ul raw fără `UploadFile` (debug) |
+| `/debug/error` | GET | Endpoint de test care ridică o excepție (verifică traceback / Sentry) |
 | `/recommendation` | POST | Recomandare multi-agent RL |
 | `/healthy-score` | POST | Scor compozit sănătate |
 | `/mind-score` | POST | Analiză MIND + scor cerebral |
@@ -94,8 +98,10 @@ Copiază `.env.example` în `.env` și completează valorile reale.
 | `/bio-age/history` | GET | Istoric bio-age (`user_id`, `days`) |
 | `/workout/log` | POST | Log antrenament |
 | `/workout/weekly` | GET | Movement score săptămânal |
-| `/intervention/today` | GET | Intervenție zilnică recomandată |
+| `/intervention/today` | POST | Intervenție zilnică recomandată |
 | `/circadian/score` | POST | Scor nutriție circadiană |
+
+Lista de mai sus reflectă rutele efectiv declarate în `hf-space/app.py`.
 
 Toate rutele (mai puțin `/` și `/health`) sunt protejate de middleware-ul `X-Internal-Token` când `INTERNAL_API_TOKEN` este setat.
 
@@ -146,11 +152,35 @@ Serviciile Python corespunzătoare au fost șterse (nu mai sunt referențiate de
 
 Deploy-ul folosește `hf-space/Dockerfile` și tratează `hf-space/` ca rădăcină (`WORKDIR /app`, `COPY . .`).
 
+1. **Dockerfile** — `hf-space/Dockerfile` este configurat: `EXPOSE 7860`, `ENV PORT=7860`, modelele sunt copiate în container.
+2. **Modele ML** — sunt bundled în `hf-space/models/` (~310 MB total). Nu necesită download la runtime.
+3. **Secrets pe HF Space** — în Space Settings → Repository secrets setează:
+   - `INTERNAL_API_TOKEN` (aceeași valoare ca în frontend / Vercel)
+   - `ALLOWED_ORIGINS` (originea frontend, ex `https://neurosnap-vision.vercel.app`)
+   - (opțional) `SENTRY_DSN`
+4. **Push** — adaugă remote-ul HF (o dată) și apoi push:
+
 ```bash
 # Adaugă remote-ul HF Space (o singură dată)
 git remote add hf https://huggingface.co/spaces/USER/neurosnap-vision
 git push hf main
 ```
+
+5. **Rebuild manual** — alternativ la push, poți declanșa un rebuild din UI-ul HF Space (Settings → Factory reboot / Restart Space).
+
+> Atunci când schimbi `backend/requirements.txt`, actualizează și `hf-space/requirements.txt` (sunt sincronizate intenționat).
+
+## Troubleshooting
+
+| Simptom | Cauză probabilă | Soluție |
+|---------|-----------------|---------|
+| Răspuns `{"error": "Prediction service unavailable"}` sau "Model not loaded" | Modelele ML lipsă sau încărcare eșuată | Verifică că fișierele modelelor există în `hf-space/models/` (`yolo_foodseg_best.pt`, `nutritrack_B4_SUPREM.keras`, `mind_pattern_model.pkl`). Verifică log-urile de startup pentru erori de import TensorFlow / ultralytics |
+| `401 Unauthorized` / `403` de la backend | `INTERNAL_API_TOKEN` diferit între frontend și backend | Setează `INTERNAL_API_TOKEN` în ambele (Vercel + HF Space) cu **aceeași valoare**. Dacă e unset în backend, auth-ul e dezactivat (dev mode) — vezi warning în log |
+| Eroare CORS în browser (preflight blocat) | Originea frontend nu e în `ALLOWED_ORIGINS` | Adaugă originea frontend (ex `https://neurosnap-vision.vercel.app`) în `ALLOWED_ORIGINS`, separate prin virgulă. Default: `http://localhost:3000` |
+| Cold start lent (15–40s) la prima cerere | HF free tier + TensorFlow + YOLO se încarcă lazy | **Normal** pentru HF free tier. Modelele se încarcă o singură dată la prima cerere (`_load_services()` este lazy). Cererile ulterioare sunt rapide. Pentru producție cu SLA, mută backend-ul pe un serviciu dedicat |
+| `OSError` / import TensorFlow la startup | Versiuni incompatibile în `requirements.txt` | Recreează venv: `rm -rf venv && python -m venv venv` și reinstalează `pip install -r requirements.txt` |
+| Eroare 500 cu `detail` gol în producție | `DEBUG` este gol/false (comportament corect) | Pentru a vedea traceback setează temporar `DEBUG="true"` (doar în dev). În producție, folosește `SENTRY_DSN` pentru capturarea erorilor |
+| Build HF Space fail (out of space) | Modelele (~310 MB) + dependențe depășesc limita de spațiu | Verifică că `.gitattributes` include LFS pentru modelele mari dacă e cazul; curăță fișierele nefolosite din `hf-space/` |
 
 ## Notă de arhitectură
 
