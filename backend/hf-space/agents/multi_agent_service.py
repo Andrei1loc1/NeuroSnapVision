@@ -52,11 +52,12 @@ def get_consistency_state(days_on_target):
 
 
 def get_multi_agent_recommendation(data: dict):
-    protein_state = get_protein_state(data["protein"], data["target_protein"])
-    calorie_state = get_calorie_state(data["calories"], data["target_calories"])
-    timing_state = get_timing_state(data["late_meals_count"])
-    fat_state = get_fat_state(data["fats"], data["target_fats"])
-    consistency_state = get_consistency_state(data["days_on_target"])
+    targets = data.get("targets") or {}
+    protein_state = get_protein_state(data.get("protein", 0), targets.get("protein", data.get("target_protein", 0)))
+    calorie_state = get_calorie_state(data.get("calories", 0), targets.get("calories", data.get("target_calories", 0)))
+    timing_state = get_timing_state(data.get("late_meals_count", 0))
+    fat_state = get_fat_state(data.get("fats", 0), targets.get("fats", data.get("target_fats", 0)))
+    consistency_state = get_consistency_state(data.get("days_on_target", 0))
 
     agent_outputs = {
         "protein_agent": {

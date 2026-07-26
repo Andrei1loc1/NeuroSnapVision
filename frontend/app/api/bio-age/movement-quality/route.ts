@@ -5,10 +5,12 @@ import { BACKEND_URL, backendHeaders } from "@/lib/server/env";
 export async function GET(request: Request) {
   const auth = requireUserId(request);
   if (auth instanceof NextResponse) return auth;
+  const userId = auth;
 
   try {
     const url = new URL(request.url);
-    const params = url.searchParams.toString();
+    const params = new URLSearchParams(url.searchParams);
+    params.set("user_id", userId);
 
     const res = await fetch(`${BACKEND_URL}/workout/weekly?${params}`, {
       method: "GET",

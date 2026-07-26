@@ -1,0 +1,16 @@
+2026-07-26 18:47:02,033 INFO app Sentry disabled (SENTRY_DSN not set)
+INFO:     Started server process [20788]
+INFO:     Waiting for application startup.
+2026-07-26 18:47:02,077 INFO app === NeuroSnap Vision Backend Starting ===
+C:\Users\Andrei\Documents\NeuroSnap Vision\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeClassifier from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\Andrei\Documents\NeuroSnap Vision\backend\venv\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator RandomForestClassifier from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+2026-07-26 18:47:08,312 WARNING tensorflow TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+2026-07-26 18:47:08,952 INFO app Prediction service loaded successfully
+2026-07-26 18:47:08,964 INFO app Services loaded. predict_available: True
+2026-07-26 18:47:08,964 INFO app === Startup Complete ===
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
