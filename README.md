@@ -156,22 +156,6 @@ NeuroSnap Vision/
 
 ---
 
-<div align="center">
-
-## 🌐 Socials
-
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white)](https://www.instagram.com/andreichindris17/) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/andrei-chindri%C8%99-97b931382/) [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:chindrisandrei2005@gmail.com)
-
----
-
-### ✍️ Random Dev Quote
-
-![](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)
-
----
-
-[![](https://visitcount.itsvg.in/api?id=Andrei1loc1&icon=0&color=0)](https://visitcount.itsvg.in)
-
 </div>
 
 <!-- Built with ❤️ in Romania -->
