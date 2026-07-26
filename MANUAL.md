@@ -981,4 +981,4 @@ La final:
 
 ## Notă finală
 
-Acest manual reflectă starea aplicației la data de 26 iulie 2026, după implementarea completă a planului de publicare (64 pași). Pentru detalii despre implementare vezi `PLAN_PUBLICATION.md`. Pentru setup și troubleshooting vezi `frontend/README.md` și `backend/README.md`.
+Acest manual reflectă starea aplicației la data de 26 iulie 2026. Pentru setup și troubleshooting vezi `frontend/README.md` și `backend/README.md`.

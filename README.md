@@ -143,14 +143,12 @@ NeuroSnap Vision/
 │   ├── gradio-space/            # Fallback Gradio (clasificare)
 │   └── yolo-space/              # Fallback Gradio (detecție YOLO)
 ├── MANUAL.md                   # Documentație tehnică completă
-├── PLAN_PUBLICATION.md          # Plan de implementare (64 pași)
 └── README.md                   # Acest fișier
 ```
 
 ## 📖 Documentație
 
 - **[MANUAL.md](MANUAL.md)** — Documentație tehnică completă (arhitectură, rute API, modele ML, algoritmi de calcul, schema DB, flow-uri funcționale)
-- **[PLAN_PUBLICATION.md](PLAN_PUBLICATION.md)** — Plan de implementare (64 pași, finalizat)
 - **[frontend/README.md](frontend/README.md)** — Setup frontend + troubleshooting
 - **[backend/README.md](backend/README.md)** — Setup backend + rute API + modele ML
 
