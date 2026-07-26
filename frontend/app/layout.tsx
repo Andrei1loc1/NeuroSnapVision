@@ -33,9 +33,21 @@ export const metadata: Metadata = {
   title: "NeuroSnap Vision",
   description: "Monitorizare nutrițională bazată pe viziune artificială și vârstă biologică.",
   applicationName: "NeuroSnap Vision",
+  appleWebApp: {
+    capable: true,
+    title: "NeuroSnap Vision",
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   manifest: "/manifest.json",
   icons: {
-    icon: "/images/leaf.png",
+    icon: [
+      { url: "/images/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/images/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/images/apple-touch-icon.png",
   },
   alternates: {
     canonical: "/",
@@ -77,7 +89,7 @@ export default async function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang="ro"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
     <body className={`${plusJakarta.className}`}>
