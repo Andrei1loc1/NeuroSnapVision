@@ -1,0 +1,16 @@
+{
+  "name": "NeuroSnap Vision",
+  "short_name": "NeuroSnap",
+  "description": "AI-powered nutrition tracking app",
+  "start_url": "/",
+  "display": "fullscreen",
+  "background_color": "#ffffff",
+  "theme_color": "#22c55e",
+  "icons": [
+    {
+      "src": "/images/leaf.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}

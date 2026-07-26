@@ -1,0 +1,456 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+  OTHER
+}
+
+enum PortionSize {
+  SMALL
+  MEDIUM
+  LARGE
+  FULL
+  CUSTOM
+}
+
+enum ScanStatus {
+  DRAFT
+  ADDED_TO_JOURNAL
+  DISCARDED
+}
+
+enum ReportType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM
+}
+
+model User {
+  id              String    @id @default(cuid())
+  displayName     String    @unique
+  age             Int?
+  sex             String?
+  bodyType        String?
+  activityLevel   String?
+  goal            String?
+  sleepHours      Float?
+  weight          Float?
+  height          Float?
+  sleepTime       String?
+  targetCalories  Int?
+  targetProtein   Int?
+  targetFats      Int?
+  lateMealThreshold Int?
+  focusArea       String?
+  createdAt       DateTime  @default(now())
+  scans        Scan[]
+  meals        Meal[]
+  reports           ReportSnapshot[]
+  dailyProtocols    DailyProtocol[]
+  dailyCoachCache   DailyCoachCache[]
+  bioAgeSnapshots   BioAgeSnapshot[]
+  workoutLogs       WorkoutLog[]
+  experiments       Experiment[]
+  location            UserLocation?
+  circadianProfile    CircadianProfile?
+  hrvReadings         HrvReading[]
+  stressEvents       StressEvent[]
+  allostaticSnapshots AllostaticSnapshot[]
+  purpose            UserPurpose?
+  meaningAlignments  MeaningAlignment[]
+  digitalSabbath     DigitalSabbath?
+  encryptedJournals  EncryptedJournal[]
+  sessionMetrics     SessionMetric[]
+
+  @@map("users")
+}
+
+model Food {
+  id               String     @id @default(cuid())
+  slug             String     @unique
+  name             String
+  calories         Decimal    @db.Decimal(8, 2)
+  proteinGrams     Decimal    @db.Decimal(8, 2)
+  carbsGrams       Decimal    @db.Decimal(8, 2)
+  fatGrams         Decimal    @db.Decimal(8, 2)
+  servingLabel     String     @default("medium")
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  scans            Scan[]
+  mealItems        MealItem[]
+
+  @@index([slug])
+}
+
+model Scan {
+  id               String      @id @default(cuid())
+  userId           String?
+  user             User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  foodId           String?
+  food             Food?       @relation(fields: [foodId], references: [id], onDelete: SetNull)
+  imageId          String?     @unique
+  image            ScanImage?  @relation(fields: [imageId], references: [id], onDelete: SetNull)
+  predictedLabel   String
+  displayName      String
+  confidence       Decimal     @db.Decimal(5, 2)
+  portionSize      PortionSize @default(MEDIUM)
+  portionLabel     String?
+  calories         Decimal     @db.Decimal(8, 2)
+  proteinGrams     Decimal     @db.Decimal(8, 2)
+  carbsGrams       Decimal     @db.Decimal(8, 2)
+  fatGrams         Decimal     @db.Decimal(8, 2)
+  status           ScanStatus  @default(DRAFT)
+  rawPrediction    Json?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  meals            Meal[]
+
+  @@index([createdAt])
+  @@index([status, createdAt])
+  @@index([foodId])
+  @@index([userId])
+}
+
+model ScanImage {
+  id          String   @id @default(cuid())
+  url         String
+  mimeType    String?
+  sizeBytes   Int?
+  width       Int?
+  height      Int?
+  createdAt   DateTime @default(now())
+  scan        Scan?
+}
+
+model Meal {
+  id            String     @id @default(cuid())
+  userId        String?
+  user          User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  sourceScanId  String?
+  sourceScan    Scan?      @relation(fields: [sourceScanId], references: [id], onDelete: SetNull)
+  mealType      MealType   @default(OTHER)
+  loggedAt      DateTime   @default(now())
+  title         String
+  notes         String?
+  metabolicMultiplier  Float?    @default(1.0)
+  stressMultiplier     Float?    @default(1.0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  items         MealItem[]
+
+  @@index([loggedAt])
+  @@index([mealType, loggedAt])
+  @@index([sourceScanId])
+  @@index([userId])
+}
+
+model MealItem {
+  id               String      @id @default(cuid())
+  mealId           String
+  meal             Meal        @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  foodId           String?
+  food             Food?       @relation(fields: [foodId], references: [id], onDelete: SetNull)
+  name             String
+  quantity         Decimal     @default(1) @db.Decimal(8, 2)
+  portionSize      PortionSize @default(MEDIUM)
+  portionLabel     String?
+  calories         Decimal     @db.Decimal(8, 2)
+  proteinGrams     Decimal     @db.Decimal(8, 2)
+  carbsGrams       Decimal     @db.Decimal(8, 2)
+  fatGrams         Decimal     @db.Decimal(8, 2)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  @@index([mealId])
+  @@index([foodId])
+}
+
+model ReportSnapshot {
+  id                 String     @id @default(cuid())
+  userId             String?
+  user               User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  type               ReportType
+  title              String
+  rangeStart         DateTime
+  rangeEnd           DateTime
+  totalCalories      Decimal    @db.Decimal(10, 2)
+  totalProteinGrams  Decimal    @db.Decimal(10, 2)
+  totalCarbsGrams    Decimal    @db.Decimal(10, 2)
+  totalFatGrams      Decimal    @db.Decimal(10, 2)
+  mealCount          Int
+  recommendations    Json?
+  snapshot           Json?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+   @@index([type, rangeStart, rangeEnd])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model DailyProtocol {
+  id               String    @id @default(cuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date             DateTime  @db.Date
+  morningRecovery  Int?
+  morningEnergy    Int?
+  morningMood      Int?
+  morningFocus     Int?
+  eveningStress    Int?
+  eveningDigestion Int?
+  eveningMood      Int?
+  eveningEnergy    Int?
+  eveningLibido    Int?
+  supplements      String[]
+  morningLight     Boolean?
+  socialConnection Int?
+  coldExposure     Boolean?
+  heatExposure     Boolean?
+  oralHealth       Boolean?
+  caffeineCutoff   Boolean?
+  screenCutoff     Boolean?
+  lastMealTime     String?
+  completedAt      DateTime?
+  isComplete       Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("daily_protocols")
+}
+
+model BioAgeSnapshot {
+  id                  String    @id @default(cuid())
+  userId              String
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date                DateTime  @db.Date
+  biologicalAge       Float
+  chronologicalAge    Int
+  paceOfAging         Float
+  nutritionScore      Float
+  sleepScore          Float
+  ansScore            Float
+  movementScore       Float
+  lightScore          Float
+  subjectiveScore     Float
+  brainAge            Float?
+  cardiovascularAge   Float?
+  metabolicAge        Float?
+  immuneAge           Float?
+  topLeverageDimension String?
+  leverageAction      String?
+  projectedImpact     Float?
+  inputData           Json
+  createdAt           DateTime  @default(now())
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("bio_age_snapshots")
+}
+
+model WorkoutLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  type        String
+  intensity   Int
+  durationMin Int
+  notes       String?
+  source      String   @default("manual")
+  createdAt   DateTime @default(now())
+
+  @@index([userId, date])
+  @@map("workout_logs")
+}
+
+model Experiment {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  hypothesis  String
+  protocol    Json
+  status      String    @default("PLANNING")
+  startDate   DateTime
+  endDate     DateTime?
+  results     Json?
+  templateId  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId, status])
+  @@map("experiments")
+}
+
+model UserLocation {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  latitude    Float
+  longitude   Float
+  timezone    String   @default("UTC")
+  cityName    String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("user_locations")
+}
+
+model CircadianProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wakeTimeTarget    String   @default("07:00")
+  sleepTimeTarget   String   @default("23:00")
+  melatoninOnset    String?
+  solarNoonOffset   Float?
+  circadianPhase    Float?
+  updatedAt         DateTime @updatedAt
+
+  @@map("circadian_profiles")
+}
+
+model HrvReading {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timestamp     DateTime @default(now())
+  sdnn          Float?
+  rmssd         Float?
+  stressLevel   Int
+  source        String   @default("ppg")
+  sessionDurationSec Int?
+  createdAt     DateTime @default(now())
+
+  @@index([userId, timestamp])
+  @@map("hrv_readings")
+}
+
+model StressEvent {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  timestamp     DateTime @default(now())
+  stressLevel   Int
+  trigger       String?
+  resolution    String?
+  durationSec   Int?
+  createdAt     DateTime @default(now())
+
+  @@index([userId, timestamp])
+  @@map("stress_events")
+}
+
+model AllostaticSnapshot {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            DateTime @db.Date
+  dailyLoad       Float
+  cumulativeLoad  Float
+  trend           String?
+  hrvBaseline     Float?
+  stressEvents    Int
+  recoveryScore   Float
+  createdAt       DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("allostatic_snapshots")
+}
+
+model UserPurpose {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  northStar     String
+  whyStatement  String?
+  values        String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("user_purposes")
+}
+
+model MeaningAlignment {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            DateTime @db.Date
+  alignmentScore  Float
+  reflection      String?
+  gratitudeNote   String?
+  createdAt       DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("meaning_alignments")
+}
+
+model DigitalSabbath {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sabbathDay    Int
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("digital_sabbaths")
+}
+
+model EncryptedJournal {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            DateTime @db.Date
+  encryptedEntry  String
+  iv              String
+  createdAt       DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("encrypted_journals")
+}
+
+model SessionMetric {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            DateTime @db.Date
+  sessionCount    Int
+  totalDurationSec Int
+  avgDurationSec  Float
+  kpiScore        Float
+  createdAt       DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("session_metrics")
+}
+
+model DailyCoachCache {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            String
+  coach           String
+  dimension       String
+  leverageBridge  String?
+  createdAt       DateTime @default(now())
+
+  @@unique([userId, date])
+  @@map("daily_coach_cache")
+}
