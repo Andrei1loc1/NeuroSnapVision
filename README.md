@@ -1,59 +1,52 @@
+<div align="center">
+
+<img src="frontend/public/images/leaf.png" width="80" height="80" alt="NeuroSnap Vision" />
+
 # NeuroSnap Vision
 
-Aplicație web (PWA) de monitorizare a stilului de viață bazată pe **viziune artificială**. Scanează mâncarea cu camera telefonului, estimează **vârsta biologică** pe 7 dimensiuni, generează **rapoarte** săptămânale și oferă **recomandări personalizate** printr-un asistent AI.
+### Vârsta biologică, nu calorii. Aplicația care îți spune cât de bătrân e corpul tău — și ce să faci azi ca să încetinești ceasul.
 
-## Ce face
+[![Live Demo](https://img.shields.io/badge/LIVE_DEMO-frontend--six--phi--87.vercel.app-22c55e?style=for-the-badge&logo=vercel&logoColor=white)](https://frontend-six-phi-87.vercel.app)
+[![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)]()
+[![Made in Romania](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20in-Romania-0047AB?style=for-the-badge)]()
+[![Status](https://img.shields.io/badge/status-production--ready-22c55e?style=for-the-badge)]()
 
-- **Scanare alimente prin cameră** — fotografiezi mâncarea, modelul YOLO detectează regiunile, EfficientNet clasifică alimentele, aplicația calculează calorii/macronutrienți. Selectezi porția, confirmi, masa se loghează automat.
-- **Vârstă biologică** — estimează vârsta corpului tău din date reale (nutriție, somn, mișcare, sistem nervos, lumină, subiectiv, hormesis). Afișează trend pe 7/30/90/365 zile, vârsta organelor (creier, cardio, metabolic, imunitar) și punctul de maxim impact (leverage point).
-- **Ritual zilnic** — check-in dimineața și seara (dispoziție, energie, stres, digestie, somn). Urmărește streak-uri și un calendar de consecvență.
-- **Rapoarte** — calorii săptămânale, balans macro, scor MIND (sănătate cerebrală), timing nutrițional, comparație săptămână-vs-săptămână, export CSV.
-- **Asistent AI** — chat cu context real: știe vârsta ta biologică, scorurile pe dimensiuni, obiectivul tău (North Star). Răspunsuri ancorate în sens, nu în vinovăție.
-- **Experimente n=1** — creează experimente personale cu durată, metrică urmărită, status. Aplicația calculează progresul automat.
-- **Jurnal criptat E2E** — reflecții personale criptate AES-GCM client-side, cheia nu părăsește device-ul.
-- **Fereastră solară/metabolică** — calcul astronomic real pentru locația ta, arată când metabolisma e la eficiență maximă.
-- **Zi de repaus digital** (Sabbath) — blochează aplicația în ziua aleasă pentru detox digital.
+<sub>Aplicație web (PWA) de longevitate care combină viziunea artificială cu medicina longevității. Scanezi mâncarea cu camera telefonului, aplicația calculează vârsta biologică pe 7 dimensiuni, și un AI personalizat îți spune exact ce să faci azi ca să încetinești ritmul de îmbătrânire.</sub>
 
-## Cum o folosești
+---
 
-1. Deschizi aplicația în browser (sau o instalezi ca PWA pe telefon — Add to Home Screen).
-2. Onboarding în 8 pași: nume, vârstă, sex, greutate/înălțime, tip corporal, nivel activitate, obiectiv, ore somn.
-3. Scanezi mese cu butonul "Loghează o masă" (Home sau Jurnal).
-4. Check-in zilnic în secțiunea Ritual.
-5. Urmărește bio-age-ul, scorurile și tendințele în dashboards.
-6. Cere sfaturi asistentului AI când ai întrebări.
-7. Revizuiește rapoartele săptămânale + ajustează obiectivele.
+</div>
 
-## Stack tehnic
+## ✨ Ce face
 
-| Componentă | Tehnologie |
-|-----------|-----------|
-| Frontend | Next.js 16, React 19, TypeScript, Tailwind CSS v4, Prisma 7 (PostgreSQL via Accelerate), PWA |
-| Backend | FastAPI Python 3.11, TensorFlow, Ultralytics YOLO, scikit-learn |
-| ML | YOLO segmentation (detecție alimente) + EfficientNetB4 (clasificare 270 clase) |
-| AI Chat | Ollama Cloud (nemotron-3-ultra) |
-| Deploy | Vercel (frontend) + Hugging Face Space (backend) |
-| Storage | Prisma Accelerate (date), Vercel Blob (imagini) |
+| 📸 | **Scanare AI a alimentelor** — Fotografiezi mâncarea → YOLO detectează regiunile → EfficientNet clasifică 270 tipuri de alimente → aplicația calculează calorii + macros. Selectezi porția, confirmi, masa se loghează automat. |
+|:--:|:--|
+| 🧬 | **Vârstă biologică pe 7 dimensiuni** — Estimare reală din datele tale: nutriție, somn, mișcare, sistem nervos, lumină, stare subiectivă, hormesis. Afișează trend pe 7/30/90/365 zile, vârsta organelor (creier, cardio, metabolic, imunitar) și punctul de maxim impact. |
+| 🤖 | **Asistent AI cu context real** — Chat care știe vârsta ta biologică, scorurile pe dimensiuni, obiectivul tău. Răspunsuri ancorate în sens, nu în vinovăție. |
+| 📊 | **Rapoarte săptămânale** — Calorii zilnice, balans macro, scor MIND (sănătate cerebrală), timing nutrițional, comparație săptămână-vs-săptămână, export CSV. |
+| ⏰ | **Ritual zilnic cu streak-uri** — Check-in dimineața și seara (dispoziție, energie, stres, digestie, somn). Calendar de consecvență pe 35 zile. |
+| 🔐 | **Jurnal criptat E2E** — Reflecții personale criptate AES-GCM client-side. Cheia nu părăsește device-ul tău. |
+| ☀️ | **Fereastră solară/metabolică** — Calcul astronomic real pentru locația ta. Arată când metabolismul e la eficiență maximă. |
+| 🧪 | **Experimente n=1** — Creează experimente personale cu durată, metrică urmărită, status. Aplicația calculează progresul automat. |
+| 🌙 | **Zi de repaus digital** — Blochează aplicația în ziua aleasă pentru detox digital. |
 
-## Rulează local
+## 🚀 Quick Start
 
-### Cerințe
+### Prerequisites
 
-- Node.js 18+, npm 10+
-- Python 3.11+, pip
-- Cont Prisma Accelerate (gratuit) — https://console.prisma.io
-- Cont Ollama Cloud (pentru AI chat) — https://cloud.ollama.com
-- (Opțional) Cont Vercel Blob pentru upload imagini
+- **Node.js** ≥ 18 · **npm** ≥ 10 · **Python** 3.11+
+- Cont **Prisma Accelerate** (gratuit) — [console.prisma.io](https://console.prisma.io)
+- Cont **Ollama Cloud** (pentru AI chat) — [cloud.ollama.com](https://cloud.ollama.com)
 
 ### Frontend
 
 ```bash
 cd frontend
 npm install
-cp .env.example .env.local   # completează cu valorile tale
+cp .env.example .env.local          # ← completează cu valorile tale
 npx prisma generate
-npx prisma db push            # sincronizează schema
-npm run dev                   # http://localhost:3000
+npx prisma db push                    # ← sincronizează schema
+npm run dev                           # ← http://localhost:3000
 ```
 
 ### Backend
@@ -61,68 +54,124 @@ npm run dev                   # http://localhost:3000
 ```bash
 cd backend/hf-space
 python -m venv venv
-source venv/bin/activate      # pe Windows: venv\Scripts\activate
+source venv/bin/activate             # ← pe Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env          # completează INTERNAL_API_TOKEN + ALLOWED_ORIGINS
-uvicorn app:app --reload --host 127.0.0.1 --port 8000
+cp .env.example .env                  # ← completează INTERNAL_API_TOKEN + ALLOWED_ORIGINS
+uvicorn app:app --reload --port 8000
 ```
 
-Modelele ML (~310 MB: YOLO + EfficientNet + sklearn) sunt în `backend/hf-space/models/` și trebuie descărcate separat sau copiate dintr-un backup.
+> ⚠️ Modelele ML (~310 MB: YOLO + EfficientNet + sklearn) trebuie descărcate separat în `backend/hf-space/models/`.
 
-### Variabile de mediu
+## 🛠️ Stack
 
-Vezi `frontend/.env.example` și `backend/.env.example` pentru lista completă cu descrieri. Cele critice:
+<div align="center">
 
-- `DATABASE_URL` — URL Prisma Accelerate (obligatoriu)
-- `SESSION_SECRET` — secret HMAC pentru sesiuni (obligatoriu, min 32 bytes)
-- `INTERNAL_API_TOKEN` — shared secret frontend↔backend (obligatoriu, identic pe ambele)
-- `ALLOWED_ORIGINS` — origini frontend permise de backend (obligatoriu pe backend)
-- `OLLAMA_CLOUD_API_KEY` — pentru AI chat (obligatoriu pentru chat)
+| | |
+|:---|:---|
+| **Frontend** | Next.js 16 · React 19 · TypeScript 5 · Tailwind CSS v4 · Prisma 7 · PWA |
+| **Backend** | FastAPI · Python 3.11 · TensorFlow · Ultralytics YOLO · scikit-learn |
+| **ML Models** | YOLO segmentation (52 MB) · EfficientNetB4 (240 MB) · MIND classifier (3.4 MB) |
+| **AI Chat** | Ollama Cloud — `nemotron-3-ultra` |
+| **Storage** | Prisma Accelerate (PostgreSQL) · Vercel Blob (imagini) · localStorage (cache) |
+| **Deploy** | Vercel (frontend) · Hugging Face Space (backend) |
 
-## Deploy
+</div>
 
-### Frontend pe Vercel
+## ⚙️ Variabile de mediu
 
-1. Conectează repo-ul `github.com/Andrei1loc1/NeuroSnapVision` în Vercel
-2. Root Directory: `frontend`
-3. Setează toate variabilele de mediu din `.env.example` în Vercel → Settings → Environment Variables
-4. Build command: `npm run build` (include `prisma generate`)
-5. Auto-deploy pe push la `main`
+Toate sunt documentate în `.env.example` (frontend + backend). Cele **critice**:
 
-### Backend pe Hugging Face Space
+| Variabilă | Unde | Scop |
+|-----------|------|------|
+| `DATABASE_URL` | Vercel | URL Prisma Accelerate (obligatoriu) |
+| `SESSION_SECRET` | Vercel | Secret HMAC pentru sesiuni, min 32 bytes (obligatoriu) |
+| `INTERNAL_API_TOKEN` | Vercel + HF Space | Shared secret frontend↔backend, **identic pe ambele** (obligatoriu) |
+| `ALLOWED_ORIGINS` | HF Space | Originile frontend permise de CORS (obligatoriu) |
+| `OLLAMA_CLOUD_API_KEY` | Vercel | Pentru AI chat |
+| `YOLO_SPACE_URL` | Vercel | URL HF Space YOLO (fallback predict) |
+| `CLASSIFIER_SPACE_URL` | Vercel | URL HF Space EfficientNet (fallback predict) |
 
-1. Creează un Docker Space pe https://huggingface.co/new-space (SDK: Docker)
-2. Conținutul din `backend/hf-space/` e gata configurat (Dockerfile + app.py + models/)
-3. Push către Space: `git push hf main` (sau upload manual)
-4. Setează în Space → Settings → Variables and secrets:
+> 💡 Generează secrete cu: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+
+## 🌍 Deploy
+
+### Frontend → Vercel
+
+1. Conectează repo în Vercel → **Root Directory**: `frontend`
+2. Setează toate env vars din `.env.example`
+3. Build command: `npm run build` (include `prisma generate`)
+4. Auto-deploy pe push la `main`
+
+### Backend → Hugging Face Space
+
+1. Creează Docker Space pe [huggingface.co/new-space](https://huggingface.co/new-space)
+2. Conținutul din `backend/hf-space/` e gata (Dockerfile + app.py + models/)
+3. Setează în Space → Settings → Variables and secrets:
    - `INTERNAL_API_TOKEN` (aceeași valoare ca în Vercel)
-   - `ALLOWED_ORIGINS` (URL-ul tău de producție, ex: `https://frontend-six-phi-87.vercel.app,http://localhost:3000`)
-5. Space-ul se build-uiește automat (10-20 min prima dată din cauza modelelor)
+   - `ALLOWED_ORIGINS` (URL-ul tău de producție + `http://localhost:3000`)
+4. `git push hf main` sau Factory Reboot din UI
 
-## Securitate
+## 🔒 Securitate
 
-- Sesiuni HMAC cu expirare 30 zile (nu 1 an)
-- Backend protejat cu shared secret (`X-Internal-Token`) — refuză request-uri fără token
-- CORS restrictiv (doar originile din `ALLOWED_ORIGINS`)
-- Validare input cu modele Pydantic pe toate rutele backend
-- Rate limiting pe rutele costisitoare (`/predict`: 10 req/min)
-- Nicio cheie API nu e expusă client-side (toate env vars sunt `server-only`)
-- Error handling global cu JSON consistent, fără traceback în producție
+- ✅ Sesiuni HMAC cu expirare 30 zile
+- ✅ Backend protejat cu shared secret (`X-Internal-Token`)
+- ✅ CORS restrictiv (doar originile din `ALLOWED_ORIGINS`)
+- ✅ Validare input cu modele Pydantic pe toate rutele backend
+- ✅ Rate limiting pe rutele costisitoare (`/predict`: 10 req/min)
+- ✅ Nicio cheie API expusă client-side
+- ✅ Error handling global cu JSON consistent, fără traceback în producție
+- ✅ Jurnal criptat AES-GCM client-side (E2E)
 
-## Structură repo
+## 📁 Structură
 
 ```
 NeuroSnap Vision/
-├── frontend/                  # Next.js 16 PWA (repo git separat)
+├── frontend/                  # Next.js 16 PWA
+│   ├── app/                    # App Router + rute API (BFF proxy)
+│   ├── components/             # Componente React pe funcționalități
+│   ├── hooks/                  # Custom hooks
+│   ├── lib/                    # API clients, auth, Prisma, cache
+│   └── prisma/                 # Schema (18 modele)
 ├── backend/
-│   ├── hf-space/              # FastAPI pentru deploy (singura sursă backend)
-│   ├── gradio-space/          # Fallback Gradio pentru clasificare
-│   ├── yolo-space/             # Fallback Gradio pentru detecție YOLO
-│   └── requirements.txt        # Dependențe Python
-├── PLAN_PUBLICATION.md         # Plan de implementare
+│   ├── hf-space/               # FastAPI (singura sursă backend)
+│   │   ├── app.py              # Entry point (lazy loading)
+│   │   ├── schemas.py          # Modele Pydantic
+│   │   ├── services/           # 11 servicii business logic
+│   │   ├── agents/             # Multi-agent Q-learning
+│   │   ├── models/              # ML models (~310 MB)
+│   │   └── Dockerfile          # Deploy HF Space
+│   ├── gradio-space/            # Fallback Gradio (clasificare)
+│   └── yolo-space/              # Fallback Gradio (detecție YOLO)
+├── MANUAL.md                   # Documentație tehnică completă
+├── PLAN_PUBLICATION.md          # Plan de implementare (64 pași)
 └── README.md                   # Acest fișier
 ```
 
-## Licență
+## 📖 Documentație
 
-Privat. Toate drepturile rezervate.
+- **[MANUAL.md](MANUAL.md)** — Documentație tehnică completă (arhitectură, rute API, modele ML, algoritmi de calcul, schema DB, flow-uri funcționale)
+- **[PLAN_PUBLICATION.md](PLAN_PUBLICATION.md)** — Plan de implementare (64 pași, finalizat)
+- **[frontend/README.md](frontend/README.md)** — Setup frontend + troubleshooting
+- **[backend/README.md](backend/README.md)** — Setup backend + rute API + modele ML
+
+---
+
+<div align="center">
+
+## 🌐 Socials
+
+[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=Instagram&logoColor=white)](https://www.instagram.com/andreichindris17/) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/andrei-chindri%C8%99-97b931382/) [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:chindrisandrei2005@gmail.com)
+
+---
+
+### ✍️ Random Dev Quote
+
+![](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=radical)
+
+---
+
+[![](https://visitcount.itsvg.in/api?id=Andrei1loc1&icon=0&color=0)](https://visitcount.itsvg.in)
+
+</div>
+
+<!-- Built with ❤️ in Romania -->
